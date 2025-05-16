@@ -34,7 +34,7 @@ public class SoftwareVersionLabel
         {
         }
 
-        public string VersionLabel { get; set; }
+        public string? VersionLabel { get; set; }
 
         #region Read and Write
 

@@ -31,7 +31,7 @@ public class EndpointTimingDescription
 
         public byte SettingIndex { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         protected override void ReadData(RdmBinaryReader data)
         {

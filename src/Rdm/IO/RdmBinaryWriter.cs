@@ -6,10 +6,10 @@ public class RdmBinaryWriter
 
     public RdmBinaryWriter(Stream output)
     {
-        this.writer = new BinaryWriter(output);
+        writer = new BinaryWriter(output);
     }
 
-    public Stream BaseStream => this.writer.BaseStream;
+    public Stream BaseStream => writer.BaseStream;
 
     public void WriteUInt16(short value)
     {
@@ -18,8 +18,8 @@ public class RdmBinaryWriter
         byte lowByte = (byte)(value & 0xFF);
 
         // Write the bytes in big-endian order
-        this.writer.Write(highByte);
-        this.writer.Write(lowByte);
+        writer.Write(highByte);
+        writer.Write(lowByte);
     }
 
     public void WriteUInt16(ushort value)
@@ -36,36 +36,37 @@ public class RdmBinaryWriter
         byte byte4 = (byte)(value & 0xFF); // Least significant byte
 
         // Write the bytes in big-endian order
-        this.writer.Write(byte1);
-        this.writer.Write(byte2);
-        this.writer.Write(byte3);
-        this.writer.Write(byte4);
+        writer.Write(byte1);
+        writer.Write(byte2);
+        writer.Write(byte3);
+        writer.Write(byte4);
     }
 
     public void WriteByte(byte value)
     {
-        this.writer.Write(value);
+        writer.Write(value);
     }
 
-    public void WriteString(string value)
+    public void WriteString(string? value)
     {
         if (!string.IsNullOrEmpty(value))
-            this.writer.Write(Encoding.ASCII.GetBytes(value));
+            writer.Write(Encoding.ASCII.GetBytes(value));
     }
 
-    public void WriteUid(UId value)
+    public void WriteUid(UId? value)
     {
+        ArgumentNullException.ThrowIfNull(value);
         WriteUInt16((short)value.ManufacturerId);
         WriteHiLoInt32((int)value.DeviceId);
     }
 
     public void WriteBool(bool value)
     {
-        this.writer.Write(value);
+        writer.Write(value);
     }
 
     public void WriteBytes(byte[] value)
     {
-        this.writer.Write(value);
+        writer.Write(value);
     }
 }

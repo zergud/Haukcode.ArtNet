@@ -34,7 +34,7 @@ public class ManufacturerLabel
         {
         }
 
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
         #region Read and Write
         
@@ -45,7 +45,10 @@ public class ManufacturerLabel
 
         protected override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteBytes(Encoding.ASCII.GetBytes(Label));
+            if (Label != null)
+            {
+                data.WriteBytes(Encoding.ASCII.GetBytes(Label));
+            }
         }
 
         #endregion

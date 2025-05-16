@@ -13,12 +13,12 @@ public class ArtNetRdmClient : ArtNetClient
     {
     }
 
-    public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId targetId)
+    public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId? targetId)
     {
         return SendRdm(packet, targetAddress, targetUniverse, targetId, RdmId);
     }
 
-    public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId targetId, UId sourceId)
+    public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId? targetId, UId? sourceId)
     {
         //Fill in addition details
         packet.Header.SourceId = sourceId;

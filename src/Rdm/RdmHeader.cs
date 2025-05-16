@@ -14,9 +14,9 @@ public class RdmHeader
 
     public byte MessageLength { get; set; }
 
-    public UId DestinationId { get; set; }
+    public UId? DestinationId { get; set; }
 
-    public UId SourceId { get; set; }
+    public UId? SourceId { get; set; }
 
     public byte TransactionNumber { get; set; }
 

@@ -33,9 +33,9 @@ public class EndpointDevices
 
         public int ListChangeNumber { get; set; }
 
-        private List<UId> deviceIds = new List<UId>();
+        private List<UId?> deviceIds = new List<UId?>();
 
-        public List<UId> DeviceIds
+        public List<UId?> DeviceIds
         {
             get { return deviceIds; }
             set { deviceIds = value; }
@@ -58,7 +58,7 @@ public class EndpointDevices
             data.WriteUInt16(EndpointID);
             data.WriteHiLoInt32(ListChangeNumber);
 
-            foreach (UId id in DeviceIds)
+            foreach (UId? id in DeviceIds)
                 data.WriteUid(id);
         }
     }

@@ -9,7 +9,7 @@ public class BindingControlFields
         {
         }
 
-        public UId Id { get; set; }
+        public UId? Id { get; set; }
 
         protected override void ReadData(RdmBinaryReader data)
         {
@@ -29,13 +29,13 @@ public class BindingControlFields
         {
         }
 
-        public UId Id { get; set; }
+        public UId? Id { get; set; }
 
         public short EndpointID { get; set; }
 
         public short ControlFields { get; set; }
 
-        public UId BindingId { get; set; }
+        public UId? BindingId { get; set; }
 
         protected override void ReadData(RdmBinaryReader data)
         {

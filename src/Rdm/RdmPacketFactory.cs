@@ -454,48 +454,67 @@ public static class RdmPacketFactory
         RegisterPacketType(RdmCommands.SetResponse, RdmParameters.RealTimeClock, typeof(RealTimeClock.SetReply));
     }
 
-    private struct PacketKey
+    private struct PacketKey : IEquatable<PacketKey>
     {
         public PacketKey(RdmCommands command, RdmParameters parameter)
         {
-            this.Command = command;
-            this.Parameter = parameter;
+            Command = command;
+            Parameter = parameter;
         }
 
         public RdmCommands Command;
         public RdmParameters Parameter;
+
+        public bool Equals(PacketKey other)
+        {
+            return Command == other.Command && Parameter == other.Parameter;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is PacketKey other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine((int)Command, (int)Parameter);
+        }
     }
 
-    private static Dictionary<PacketKey, Type> packetStore = new Dictionary<PacketKey, Type>();
+    private static readonly Dictionary<PacketKey, Type> packetStore = new Dictionary<PacketKey, Type>();
 
-    public static void RegisterPacketType(RdmCommands command, RdmParameters parameter, Type packetType)
+    /// <summary>
+    /// Registering RDM packet
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="parameter"></param>
+    /// <param name="packetType"></param>
+    /// <returns>true if success, false if packet is already registered</returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static bool RegisterPacketType(RdmCommands command, RdmParameters parameter, Type packetType)
     {
+        PacketKey key = new PacketKey
+        {
+            Command = command,
+            Parameter = parameter
+        };
 
-
-        PacketKey key = new PacketKey();
-        key.Command = command;
-        key.Parameter = parameter;
-
-        if (packetStore.ContainsKey(key))
-            throw new InvalidOperationException(string.Format("The packet {0} is already registered for {1}.", parameter.ToString(), command.ToString()));
-
-        packetStore[key] = packetType;
+        return packetStore.TryAdd(key, packetType);
+        //    throw new InvalidOperationException(
+        //        $"The packet {parameter.ToString()} is already registered for {command.ToString()}.");
     }
 
-    public static RdmPacket Build(RdmHeader header)
+    public static RdmPacket? Build(RdmHeader header)
     {
         if (IsErrorResponse(header))
         {
             //Error Response Packets
             return BuildErrorResponse(header);
         }
-        else
+
+        if (packetStore.TryGetValue(new PacketKey(header.Command, header.ParameterId), out var packetType))
         {
-            Type packetType;
-            if (packetStore.TryGetValue(new PacketKey(header.Command, header.ParameterId), out packetType))
-            {
-                return RdmPacket.Create(header, packetType);
-            }
+            return RdmPacket.Create(header, packetType);
         }
 
         return null;
@@ -503,22 +522,16 @@ public static class RdmPacketFactory
 
     public static bool IsErrorResponse(RdmHeader header)
     {
-        if (!IsResponse(header))
-            return false;
-
-        switch ((RdmResponseTypes)header.PortOrResponseType)
+        return IsResponse(header) && (RdmResponseTypes)header.PortOrResponseType switch
         {
-            case RdmResponseTypes.Ack:
-            case RdmResponseTypes.AckOverflow:
-                return false;
-        }
-
-        return true;
+            RdmResponseTypes.Ack or RdmResponseTypes.AckOverflow => false,
+            _ => true
+        };
     }
 
     public static bool IsResponse(RdmHeader header)
     {
-        return header.Command == RdmCommands.GetResponse || header.Command != RdmCommands.SetResponse;
+        return header.Command == RdmCommands.GetResponse || header.Command == RdmCommands.SetResponse;
     }
 
     public static RdmPacket? BuildErrorResponse(RdmHeader header)

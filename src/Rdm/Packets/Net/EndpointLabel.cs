@@ -55,7 +55,7 @@ public class EndpointLabel
 
         public short EndpointID { get; set; }
 
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
         protected override void ReadData(RdmBinaryReader data)
         {

@@ -43,7 +43,7 @@ public class SlotDescription
 
         public short SlotOffset { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         #region Read and Write
 

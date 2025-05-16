@@ -37,17 +37,17 @@ public class RdmEndPoint : IPEndPoint
         set { ipAddress = value; }
     }
 
-    private UId id = UId.Empty;
+    private UId? id = UId.Empty;
 
-    public UId Id
+    public UId? Id
     {
         get { return id; }
         set { id = value; }
     }
 
-    private UId gatewayId = UId.Empty;
+    private UId? gatewayId = UId.Empty;
 
-    public UId GatewayId
+    public UId? GatewayId
     {
         get { return gatewayId; }
         set { gatewayId = value; }

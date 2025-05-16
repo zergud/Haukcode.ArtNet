@@ -31,12 +31,12 @@ public class RdmBinaryReader
         return (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
     }
 
-    public string ReadString(int length)
+    public string? ReadString(int length)
     {
         return Encoding.ASCII.GetString(this.reader.ReadBytes(length)).TrimEnd((char)0);
     }
 
-    public UId ReadUId()
+    public UId? ReadUId()
     {
         return new UId((ushort)ReadInt16(), (uint)ReadHiLoInt32());
     }

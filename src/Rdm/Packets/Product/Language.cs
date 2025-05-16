@@ -38,13 +38,14 @@ public class Language
         {
         }       
 
-        public CultureInfo Language { get; set; }
+        public CultureInfo Language { get; set; } = CultureInfo.InvariantCulture;
 
         #region Read and Write
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            Language = new CultureInfo(data.ReadString(Header.ParameterDataLength));
+            string? lang = data.ReadString(Header.ParameterDataLength);
+            Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 
         protected override void WriteData(RdmBinaryWriter data)
@@ -62,18 +63,19 @@ public class Language
         {
         }
 
-        public CultureInfo Language { get; set; }
+        public CultureInfo? Language { get; set; }
 
         #region Read and Write
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            Language = new CultureInfo(data.ReadString(Header.ParameterDataLength));
+            string? lang = data.ReadString(Header.ParameterDataLength);
+            Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 
         protected override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteString(Language.TwoLetterISOLanguageName);
+            data.WriteString(Language?.TwoLetterISOLanguageName ?? "en");
         }
 
         #endregion

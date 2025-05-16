@@ -32,7 +32,7 @@ public class DeviceModelDescription
         {
         }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         #region Read and Write
 
@@ -43,7 +43,10 @@ public class DeviceModelDescription
 
         protected override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteBytes(Encoding.ASCII.GetBytes(Description));
+            if (Description != null)
+            {
+                data.WriteBytes(Encoding.ASCII.GetBytes(Description));
+            }
         }
 
         #endregion

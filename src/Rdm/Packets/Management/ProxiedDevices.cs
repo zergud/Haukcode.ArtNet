@@ -36,13 +36,13 @@ public class ProxiedDevices
         public GetReply()
             : base(RdmCommands.GetResponse, RdmParameters.ProxiedDevices)
         {
-            DeviceIds = new List<UId>();
+            DeviceIds = new List<UId?>();
         }
 
         /// <summary>
         /// A list of device ids for devices discovered by the proxy.
         /// </summary>
-        public List<UId> DeviceIds { get; set; }
+        public List<UId?> DeviceIds { get; set; }
 
         #region Read and Write
 
@@ -56,7 +56,7 @@ public class ProxiedDevices
 
         protected override void WriteData(RdmBinaryWriter data)
         {
-            foreach (UId id in DeviceIds)
+            foreach (UId? id in DeviceIds)
                 data.WriteUid(id);
         }
 
