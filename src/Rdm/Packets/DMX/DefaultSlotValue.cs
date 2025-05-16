@@ -54,7 +54,7 @@ public class DefaultSlotValue
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            for (int n = 0; n < Header.ParameterDataLength / 3; n++)
+            for (int n = 0; n < ParameterDataLength / 3; n++)
             {
                 SlotValue slot = new SlotValue();
                 slot.Offset = data.ReadInt16();

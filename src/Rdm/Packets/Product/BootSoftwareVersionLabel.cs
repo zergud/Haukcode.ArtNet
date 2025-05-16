@@ -40,7 +40,7 @@ public class BootSoftwareVersionLabel
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            VersionLabel = data.ReadString(Header.ParameterDataLength);
+            VersionLabel = data.ReadString(ParameterDataLength);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

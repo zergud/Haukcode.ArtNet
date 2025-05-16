@@ -47,7 +47,7 @@ public class EndpointDevices
             EndpointID = data.ReadInt16();
             ListChangeNumber = data.ReadHiLoInt32();
 
-            for (int n = 0; n < (Header.ParameterDataLength - 6) / 6; n++)
+            for (int n = 0; n < (ParameterDataLength - 6) / 6; n++)
             {
                 DeviceIds.Add(data.ReadUId());
             }

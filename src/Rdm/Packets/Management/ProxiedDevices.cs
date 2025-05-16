@@ -48,7 +48,7 @@ public class ProxiedDevices
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            for (int n = 0; n < Header.ParameterDataLength / 6; n++)
+            for (int n = 0; n < ParameterDataLength / 6; n++)
             {
                 DeviceIds.Add(data.ReadUId());
             }

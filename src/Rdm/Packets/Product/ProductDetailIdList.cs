@@ -104,7 +104,7 @@ public class ProductDetailIdList
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            for (int n = 0; n < Header.ParameterDataLength / 2; n++)
+            for (int n = 0; n < ParameterDataLength / 2; n++)
                 Details.Add((DetailId)data.ReadInt16());
         }
 

@@ -36,7 +36,7 @@ public class BackgroundQueuedStatusPolicyDescription
         protected override void ReadData(RdmBinaryReader data)
         {
             PolicyID = data.ReadByte();
-            Description = data.ReadString(Header.ParameterDataLength - 1);
+            Description = data.ReadString(ParameterDataLength - 1);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

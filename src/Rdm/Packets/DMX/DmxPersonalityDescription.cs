@@ -45,8 +45,8 @@ public class DmxPersonalityDescription
         {
             PersonalityIndex = data.ReadByte();
             DmxSlotsRequired = data.ReadInt16();
-            if(Header.ParameterDataLength > 3)
-                Description = data.ReadString(Header.ParameterDataLength - 3);
+            if(ParameterDataLength > 3)
+                Description = data.ReadString(ParameterDataLength - 3);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

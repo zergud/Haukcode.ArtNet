@@ -44,7 +44,7 @@ public class Language
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            string? lang = data.ReadString(Header.ParameterDataLength);
+            string? lang = data.ReadString(ParameterDataLength);
             Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 
@@ -69,7 +69,7 @@ public class Language
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            string? lang = data.ReadString(Header.ParameterDataLength);
+            string? lang = data.ReadString(ParameterDataLength);
             Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 

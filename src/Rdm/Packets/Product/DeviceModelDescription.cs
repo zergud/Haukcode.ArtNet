@@ -38,7 +38,7 @@ public class DeviceModelDescription
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            Description = data.ReadString(Header.ParameterDataLength);
+            Description = data.ReadString(ParameterDataLength);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

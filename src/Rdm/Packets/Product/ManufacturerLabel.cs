@@ -40,7 +40,7 @@ public class ManufacturerLabel
         
         protected override void ReadData(RdmBinaryReader data)
         {
-            Label = data.ReadString(Header.ParameterDataLength);
+            Label = data.ReadString(ParameterDataLength);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

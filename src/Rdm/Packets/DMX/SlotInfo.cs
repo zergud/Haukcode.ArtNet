@@ -71,7 +71,7 @@ public class SlotInfo
         protected override void ReadData(RdmBinaryReader data)
         {
             Slots.Clear();
-            for (int n = 0; n < Header.ParameterDataLength / 5; n++)
+            for (int n = 0; n < ParameterDataLength / 5; n++)
             {
                 SlotInformation slot = new SlotInformation();
                 slot.Offset = data.ReadInt16();

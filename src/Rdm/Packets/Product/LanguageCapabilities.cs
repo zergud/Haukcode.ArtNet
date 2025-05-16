@@ -45,9 +45,9 @@ public class LanguageCapabilities
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            for (int n = 0; n < Header.ParameterDataLength / 2; n++)
+            for (int n = 0; n < ParameterDataLength / 2; n++)
             {
-                string? lang = data.ReadString(Header.ParameterDataLength);
+                string? lang = data.ReadString(ParameterDataLength);
                 Languages.Add(lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture);
             }
         }

@@ -46,7 +46,7 @@ public class SelfTestDescription
         protected override void ReadData(RdmBinaryReader data)
         {
             TestNumber = data.ReadByte();
-            Description = data.ReadString(Header.ParameterDataLength - 1);
+            Description = data.ReadString(ParameterDataLength - 1);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

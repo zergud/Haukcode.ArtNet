@@ -165,7 +165,7 @@ public class SensorDefinition
             NormalMinValue = data.ReadInt16();
             NormalMaxValue = data.ReadInt16();
             RecordValueSupport = data.ReadByte();
-            Description = data.ReadString(Header.ParameterDataLength-13);
+            Description = data.ReadString(ParameterDataLength-13);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

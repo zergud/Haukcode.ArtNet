@@ -9,7 +9,7 @@ public class RdmNack:RdmPacket
     public RdmNack(RdmCommands command, RdmParameters parameterId)
         : base(command, parameterId)
     {
-        Header.PortOrResponseType = (byte) RdmResponseTypes.NackReason;
+        PortOrResponseType = (byte) RdmResponseTypes.NackReason;
     }
 
     public NackReason Reason { get; set; }

@@ -72,7 +72,7 @@ public class DiscoveryMute
         protected override void ReadData(RdmBinaryReader data)
         {
             ControlField = data.ReadInt16();
-            if (Header.ParameterDataLength > 2)
+            if (ParameterDataLength > 2)
                 BindingId = data.ReadUId();
         }
 

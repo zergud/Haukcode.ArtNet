@@ -21,12 +21,12 @@ public class ArtNetRdmClient : ArtNetClient
     public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId? targetId, UId? sourceId)
     {
         //Fill in addition details
-        packet.Header.SourceId = sourceId;
-        packet.Header.DestinationId = targetId;
+        packet.SourceId = sourceId;
+        packet.DestinationId = targetId;
 
         //Sub Devices
         if (targetId is SubDeviceUId subDevice)
-            packet.Header.SubDevice = subDevice.SubDeviceId;
+            packet.SubDevice = subDevice.SubDeviceId;
 
         //Create Rdm Packet
         using (var rdmData = new MemoryStream())
@@ -34,7 +34,7 @@ public class ArtNetRdmClient : ArtNetClient
             var rdmWriter = new RdmBinaryWriter(rdmData);
 
             //Write the RDM packet
-            RdmPacket.WritePacket(packet, rdmWriter);
+            packet.WritePacket(rdmWriter);
 
             //Write the checksum
             rdmWriter.WriteUInt16((short)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +

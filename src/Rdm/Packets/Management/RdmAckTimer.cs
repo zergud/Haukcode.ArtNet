@@ -9,7 +9,7 @@ public class RdmAckTimer : RdmPacket
     public RdmAckTimer(RdmCommands command, RdmParameters parameterId)
         : base(command, parameterId)
     {
-        Header.PortOrResponseType = (byte)RdmResponseTypes.AckTimer;
+        PortOrResponseType = (byte)RdmResponseTypes.AckTimer;
     }
 
     public short EstimatedResponseTime { get; set; }

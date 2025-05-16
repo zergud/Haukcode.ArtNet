@@ -54,7 +54,7 @@ public class EndpointList
             ListChangeNumber = data.ReadHiLoInt32();
 
             List<short> endpoints = new List<short>();
-            for (int n = 0; n < ((Header.ParameterDataLength - 4) / 2); n++)
+            for (int n = 0; n < ((ParameterDataLength - 4) / 2); n++)
             {
                 endpoints.Add(data.ReadInt16());
             }

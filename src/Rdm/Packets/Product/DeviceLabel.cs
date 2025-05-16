@@ -37,7 +37,7 @@ public class DeviceLabel
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            Label = data.ReadString(Header.ParameterDataLength);
+            Label = data.ReadString(ParameterDataLength);
         }
 
         protected override void WriteData(RdmBinaryWriter data)
@@ -62,7 +62,7 @@ public class DeviceLabel
 
         protected override void ReadData(RdmBinaryReader data)
         {
-            Label = Encoding.ASCII.GetString(data.ReadBytes(Header.ParameterDataLength));
+            Label = Encoding.ASCII.GetString(data.ReadBytes(ParameterDataLength));
         }
 
         protected override void WriteData(RdmBinaryWriter data)

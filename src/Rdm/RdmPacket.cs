@@ -4,21 +4,35 @@ public abstract class RdmPacket
 {
     protected RdmPacket()
     {
-        Header = new RdmHeader();
     }
 
     public RdmPacket(RdmCommands command, RdmParameters parameterId)
     {
-        Header = new RdmHeader
-        {
-            Command = command,
-            ParameterId = parameterId
-        };
+        Command = command;
+        ParameterId = parameterId;
     }
 
     #region Contents
 
-    public RdmHeader Header { get; protected set; }
+    public byte MessageLength { get; set; }
+
+    public UId? DestinationId { get; set; }
+
+    public UId? SourceId { get; set; }
+
+    public byte TransactionNumber { get; set; }
+
+    public byte PortOrResponseType { get; set; }
+
+    public byte MessageCount { get; set; }
+
+    public short SubDevice { get; set; }
+
+    public RdmCommands Command { get; set; }
+
+    public RdmParameters ParameterId { get; set; }
+
+    public byte ParameterDataLength { get; protected set; }
 
     public short Checksum { get; set; }
 
@@ -26,41 +40,31 @@ public abstract class RdmPacket
 
     #region Read and Write
 
-    protected void ReadHeader(RdmBinaryReader data)
-    {
-        Header.ReadData(data);
-    }
-
-    protected void WriteHeader(RdmBinaryWriter data)
-    {
-        Header.WriteData(data);
-    }
-
     protected abstract void ReadData(RdmBinaryReader data);
 
     protected abstract void WriteData(RdmBinaryWriter data);
 
-    public static RdmPacket ReadPacket(RdmBinaryReader data)
-    {
-        RdmHeader header = new RdmHeader();
-        header.ReadData(data);
-
-        var rdmPacket = Create(header);
-        if (rdmPacket != null)
-        {
-            rdmPacket.ReadData(data);
-            return rdmPacket;
-        }
-
-        rdmPacket = RdmPacket.Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
-        if (rdmPacket != null)
-        {
-            rdmPacket.ReadData(data);
-            return rdmPacket;
-        }
-
-        throw new UnknownRdmPacketException(header);            
-    }
+    // public static RdmPacket ReadPacket(RdmBinaryReader data)
+    // {
+    //     RdmHeader header = new RdmHeader();
+    //     header.ReadData(data);
+    //
+    //     var rdmPacket = Create(header);
+    //     if (rdmPacket != null)
+    //     {
+    //         rdmPacket.ReadData(data);
+    //         return rdmPacket;
+    //     }
+    //
+    //     rdmPacket = RdmPacket.Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
+    //     if (rdmPacket != null)
+    //     {
+    //         rdmPacket.ReadData(data);
+    //         return rdmPacket;
+    //     }
+    //
+    //     throw new UnknownRdmPacketException(header);            
+    // }
 
     public static RdmPacket? ReadPacket(RdmCommands command, RdmParameters parameterId, RdmBinaryReader contentData)
     {
@@ -91,19 +95,20 @@ public abstract class RdmPacket
         throw new UnknownRdmPacketException(header);
     }
 
-    public static bool TryReadPacket(RdmBinaryReader data, out RdmPacket? rdmPacket)
+    public void ReadPacket(RdmBinaryReader data)
     {
-        RdmHeader header = new RdmHeader();
-        header.ReadData(data);
+        MessageLength = data.ReadByte();
+        DestinationId = data.ReadUId();
+        SourceId = data.ReadUId();
+        TransactionNumber = data.ReadByte();
+        PortOrResponseType = data.ReadByte();
+        MessageCount = data.ReadByte();
+        SubDevice = data.ReadInt16();
+        Command = (RdmCommands)data.ReadByte();
+        ParameterId = (RdmParameters)data.ReadInt16();
+        ParameterDataLength = data.ReadByte();
 
-        rdmPacket = Create(header);
-        if (rdmPacket != null)
-        {
-            rdmPacket.ReadData(data);
-            return true;
-        }
-
-        return false;
+        ReadData(data);
     }
 
     public static RdmRawPacket? ReadPacketRaw(RdmBinaryReader data)
@@ -114,18 +119,23 @@ public abstract class RdmPacket
         RdmRawPacket? rdmPacket = Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
         rdmPacket?.ReadData(data);
 
-        return rdmPacket;   
+        return rdmPacket;
     }
 
-    public static void WritePacket(RdmPacket packet, RdmBinaryWriter data, bool onlyContent = false)
+    public void WritePacket(RdmBinaryWriter data)
     {
-        if (!onlyContent)
-            packet.WriteHeader(data);
+        data.WriteByte(MessageLength);
+        data.WriteUid(DestinationId);
+        data.WriteUid(SourceId);
+        data.WriteByte(TransactionNumber);
+        data.WriteByte(PortOrResponseType);
+        data.WriteByte(MessageCount);
+        data.WriteUInt16(SubDevice);
+        data.WriteByte((byte)Command);
+        data.WriteUInt16((short)ParameterId);
+        data.WriteByte(ParameterDataLength);
 
-        packet.WriteData(data);
-
-        if (!onlyContent)
-            packet.Header.WriteLength(data);
+        WriteData(data);
     }
 
     public static ushort CalculateChecksum(byte[] data)
@@ -139,14 +149,15 @@ public abstract class RdmPacket
     public static ushort CalculateChecksum(byte[] data, int startIndex, int endIndex)
     {
         ushort checksum = 0;
-        for (int n=startIndex;n<endIndex;n++)
+        for (int n = startIndex; n < endIndex; n++)
             checksum += data[n];
         return checksum;
     }
 
     public bool IsOverflow()
     {
-        return (RdmResponseTypes) Header.PortOrResponseType == RdmResponseTypes.AckOverflow && (Header.Command == RdmCommands.GetResponse || Header.Command == RdmCommands.SetResponse);
+        return (RdmResponseTypes)PortOrResponseType == RdmResponseTypes.AckOverflow &&
+               (Command == RdmCommands.GetResponse || Command == RdmCommands.SetResponse);
     }
 
     #endregion
@@ -163,6 +174,7 @@ public abstract class RdmPacket
         {
             return null;
         }
+
         RdmPacket packet = (RdmPacket)obj;
         packet.Header = header;
 

@@ -50,7 +50,7 @@ public class SlotDescription
         protected override void ReadData(RdmBinaryReader data)
         {
             SlotOffset = data.ReadInt16();
-            Description = data.ReadString(Header.ParameterDataLength - 2);
+            Description = data.ReadString(ParameterDataLength - 2);
         }
 
         protected override void WriteData(RdmBinaryWriter data)

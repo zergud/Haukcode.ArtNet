@@ -19,7 +19,7 @@ public class RdmRawPacket : RdmPacket
 
     protected override void ReadData(RdmBinaryReader data)
     {
-        Data = data.ReadBytes(Header.ParameterDataLength);
+        Data = data.ReadBytes(ParameterDataLength);
     }
 
     protected override void WriteData(RdmBinaryWriter data)

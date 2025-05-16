@@ -122,7 +122,7 @@ public class ParameterDescription
             MinValidValue = data.ReadHiLoInt32();
             MaxValidValue = data.ReadHiLoInt32();
             DefaultValue = data.ReadHiLoInt32();
-            Description = data.ReadString(Header.ParameterDataLength - 20);
+            Description = data.ReadString(ParameterDataLength - 20);
         }
 
         protected override void WriteData(RdmBinaryWriter data)
