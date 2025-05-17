@@ -5,15 +5,14 @@ using Haukcode.ArtNet.Rdm.Packets.Parameters;
 using Haukcode.ArtNet.Rdm.Packets.Control;
 using Haukcode.ArtNet.Rdm.Packets.Status;
 using Haukcode.ArtNet.Rdm.Packets.Power;
-using Haukcode.ArtNet.Rdm.Packets.Management;
 using Haukcode.ArtNet.Rdm.Packets.Discovery;
 using Haukcode.ArtNet.Rdm.Packets.Configuration;
 
 namespace Haukcode.ArtNet.Rdm;
 
-public static class RdmPacketFactory
+public class RdmPacketFactory
 {
-    static RdmPacketFactory()
+    public RdmPacketFactory()
     {
         RegisterDiscoveryMessages();
         RegisterStatusMessages();
@@ -27,115 +26,115 @@ public static class RdmPacketFactory
         RegisterControlMessages();
     }
 
-    private static void RegisterDiscoveryMessages()
+    private void RegisterDiscoveryMessages()
     {
-        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryUniqueBranch, typeof(DiscoveryUniqueBranch.Request));
-        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUniqueBranch, typeof(DiscoveryUniqueBranch.Reply));
+        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryUniqueBranch, () => new DiscoveryUniqueBranch.Request());
+        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUniqueBranch, () => new DiscoveryUniqueBranch.Reply());
 
-        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryMute, typeof(DiscoveryMute.Request));
-        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryMute, typeof(DiscoveryMute.Reply));
+        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryMute, () => new DiscoveryMute.Request());
+        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryMute, () => new DiscoveryMute.Reply());
 
-        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryUnMute, typeof(DiscoveryMute.Request));
-        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUnMute, typeof(DiscoveryMute.Reply));
+        RegisterPacketType(RdmCommands.Discovery, RdmParameters.DiscoveryUnMute, () => new DiscoveryMute.Request());
+        RegisterPacketType(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUnMute, () => new DiscoveryMute.Reply());
 
     }
 
-    private static void RegisterStatusMessages()
+    private void RegisterStatusMessages()
     {
         //QueuedMessage
-        RegisterPacketType(RdmCommands.Get, RdmParameters.QueuedMessage, typeof(QueuedMessage.Get));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.QueuedMessage, () => new QueuedMessage.Get());
 
         //StatusMessage
-        RegisterPacketType(RdmCommands.Get, RdmParameters.StatusMessage, typeof(StatusMessage.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.StatusMessage, typeof(StatusMessage.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.StatusMessage, () => new StatusMessage.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.StatusMessage, () => new StatusMessage.GetReply());
 
         //ClearStatusId
-        RegisterPacketType(RdmCommands.Set, RdmParameters.ClearStatusId, typeof(ClearStatusId.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ClearStatusId, typeof(ClearStatusId.SetReply));
+        RegisterPacketType(RdmCommands.Set, RdmParameters.ClearStatusId, () => new ClearStatusId.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ClearStatusId, () => new ClearStatusId.SetReply());
     }
 
-    private static void RegisterCoreMessages()
+    private void RegisterCoreMessages()
     {
         //SupportedParameters
-        RegisterPacketType(RdmCommands.Get, RdmParameters.SupportedParameters, typeof(SupportedParameters.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SupportedParameters, typeof(SupportedParameters.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.SupportedParameters, () => new SupportedParameters.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SupportedParameters, () => new SupportedParameters.GetReply());
 
         //ParameterDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.ParameterDescription, typeof(ParameterDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ParameterDescription, typeof(ParameterDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.ParameterDescription, () => new ParameterDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ParameterDescription, () => new ParameterDescription.GetReply());
     }
 
 
 
-    private static void RegisterRdmNetMessages()
+    private void RegisterRdmNetMessages()
     {
         //Endpoint List
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointList, typeof(EndpointList.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointList, typeof(EndpointList.Reply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointList, () => new EndpointList.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointList, () => new EndpointList.Reply());
 
         //EndpointListChange
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointListChange, typeof(EndpointListChange.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointListChange, typeof(EndpointListChange.Reply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointListChange, () => new EndpointListChange.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointListChange, () => new EndpointListChange.Reply());
 
         //EndpointIdentify
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointIdentify, typeof(EndpointIdentify.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointIdentify, typeof(EndpointIdentify.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointIdentify, typeof(EndpointIdentify.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointIdentify, typeof(EndpointIdentify.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointIdentify, () => new EndpointIdentify.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointIdentify, () => new EndpointIdentify.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointIdentify, () => new EndpointIdentify.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointIdentify, () => new EndpointIdentify.SetReply());
 
         //EndpointToUniverse
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointToUniverse, typeof(EndpointToUniverse.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointToUniverse, typeof(EndpointToUniverse.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointToUniverse, typeof(EndpointToUniverse.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointToUniverse, typeof(EndpointToUniverse.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointToUniverse, () => new EndpointToUniverse.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointToUniverse, () => new EndpointToUniverse.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointToUniverse, () => new EndpointToUniverse.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointToUniverse, () => new EndpointToUniverse.SetReply());
 
         //RdmTrafficEnable
-        RegisterPacketType(RdmCommands.Get, RdmParameters.RdmTrafficEnable, typeof(RdmTrafficEnable.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.RdmTrafficEnable, typeof(BackgroundDiscovery.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.RdmTrafficEnable, typeof(RdmTrafficEnable.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.RdmTrafficEnable, typeof(RdmTrafficEnable.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.RdmTrafficEnable, () => new RdmTrafficEnable.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.RdmTrafficEnable, () => new BackgroundDiscovery.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.RdmTrafficEnable, () => new RdmTrafficEnable.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.RdmTrafficEnable, () => new RdmTrafficEnable.SetReply());
 
         //EndpointMode
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointMode, typeof(EndpointMode.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointMode, typeof(EndpointMode.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointMode, typeof(EndpointMode.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointMode, typeof(EndpointMode.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointMode, () => new EndpointMode.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointMode, () => new EndpointMode.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointMode, () => new EndpointMode.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointMode, () => new EndpointMode.SetReply());
 
         //EndpointLabel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointLabel, typeof(EndpointLabel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointLabel, typeof(EndpointLabel.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointLabel, typeof(EndpointLabel.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointLabel, typeof(EndpointLabel.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointLabel, () => new EndpointLabel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointLabel, () => new EndpointLabel.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointLabel, () => new EndpointLabel.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointLabel, () => new EndpointLabel.SetReply());
 
         //DiscoveryState
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DiscoveryState, typeof(DiscoveryState.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DiscoveryState, typeof(DiscoveryState.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DiscoveryState, typeof(DiscoveryState.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DiscoveryState, typeof(DiscoveryState.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DiscoveryState, () => new DiscoveryState.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DiscoveryState, () => new DiscoveryState.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DiscoveryState, () => new DiscoveryState.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DiscoveryState, () => new DiscoveryState.SetReply());
 
         //BackgroundDiscovery
-        RegisterPacketType(RdmCommands.Get, RdmParameters.BackgroundDiscovery, typeof(BackgroundDiscovery.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BackgroundDiscovery, typeof(BackgroundDiscovery.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.BackgroundDiscovery, typeof(BackgroundDiscovery.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.BackgroundDiscovery, typeof(BackgroundDiscovery.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.BackgroundDiscovery, () => new BackgroundDiscovery.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BackgroundDiscovery, () => new BackgroundDiscovery.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.BackgroundDiscovery, () => new BackgroundDiscovery.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.BackgroundDiscovery, () => new BackgroundDiscovery.SetReply());
 
         //EndpointTiming
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointTiming, typeof(EndpointTiming.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointTiming, typeof(EndpointTiming.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointTiming, typeof(EndpointTiming.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointTiming, typeof(EndpointTiming.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointTiming, () => new EndpointTiming.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointTiming, () => new EndpointTiming.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.EndpointTiming, () => new EndpointTiming.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.EndpointTiming, () => new EndpointTiming.SetReply());
 
         //EndpointTimingDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointTimingDescription, typeof(EndpointTimingDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointTimingDescription, typeof(EndpointTimingDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointTimingDescription, () => new EndpointTimingDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointTimingDescription, () => new EndpointTimingDescription.GetReply());
 
         //EndpointDeviceListChange
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointDeviceListChange, typeof(EndpointDeviceListChange.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointDeviceListChange, typeof(EndpointDeviceListChange.Reply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointDeviceListChange, () => new EndpointDeviceListChange.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointDeviceListChange, () => new EndpointDeviceListChange.Reply());
 
         //Endpoint Devices
-        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointDevices, typeof(EndpointDevices.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointDevices, typeof(EndpointDevices.Reply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.EndpointDevices, () => new EndpointDevices.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.EndpointDevices, () => new EndpointDevices.Reply());
 
         //BindingControlFields
         //TcpCommsStatus
@@ -146,352 +145,327 @@ public static class RdmPacketFactory
         //QueuedStatusUIDCollection
     }
 
-    private static void RegisterProductMessages()
+    private void RegisterProductMessages()
     {
         //DeviceInfo
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceInfo, typeof(DeviceInfo.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceInfo, typeof(DeviceInfo.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceInfo, () => new DeviceInfo.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceInfo, () => new DeviceInfo.GetReply());
 
         //ProductDetailIdList
-        RegisterPacketType(RdmCommands.Get, RdmParameters.ProductDetailIdList, typeof(ProductDetailIdList.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ProductDetailIdList, typeof(ProductDetailIdList.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.ProductDetailIdList, () => new ProductDetailIdList.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ProductDetailIdList, () => new ProductDetailIdList.GetReply());
 
         //DeviceModelDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceModelDescription, typeof(DeviceModelDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceModelDescription, typeof(DeviceModelDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceModelDescription, () => new DeviceModelDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceModelDescription, () => new DeviceModelDescription.GetReply());
 
         //ManufacturerLabel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.ManufacturerLabel, typeof(ManufacturerLabel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ManufacturerLabel, typeof(ManufacturerLabel.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.ManufacturerLabel, () => new ManufacturerLabel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ManufacturerLabel, () => new ManufacturerLabel.GetReply());
 
         //DeviceLabel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceLabel, typeof(DeviceLabel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceLabel, typeof(DeviceLabel.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DeviceLabel, typeof(DeviceLabel.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DeviceLabel, typeof(DeviceLabel.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceLabel, () => new DeviceLabel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceLabel, () => new DeviceLabel.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DeviceLabel, () => new DeviceLabel.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DeviceLabel, () => new DeviceLabel.SetReply());
 
         //FactoryDefaults
-        RegisterPacketType(RdmCommands.Get, RdmParameters.FactoryDefaults, typeof(FactoryDefaults.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.FactoryDefaults, typeof(FactoryDefaults.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.FactoryDefaults, typeof(FactoryDefaults.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.FactoryDefaults, typeof(FactoryDefaults.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.FactoryDefaults, () => new FactoryDefaults.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.FactoryDefaults, () => new FactoryDefaults.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.FactoryDefaults, () => new FactoryDefaults.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.FactoryDefaults, () => new FactoryDefaults.SetReply());
 
         //LanguageCapabilities
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LanguageCapabilities, typeof(LanguageCapabilities.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LanguageCapabilities, typeof(LanguageCapabilities.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LanguageCapabilities, () => new LanguageCapabilities.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LanguageCapabilities, () => new LanguageCapabilities.GetReply());
 
         //Language
-        RegisterPacketType(RdmCommands.Get, RdmParameters.Language, typeof(Language.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.Language, typeof(Language.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.Language, typeof(Language.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.Language, typeof(Language.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.Language, () => new Language.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.Language, () => new Language.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.Language, () => new Language.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.Language, () => new Language.SetReply());
 
         //SoftwareVersionLabel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.SoftwareVersionLabel, typeof(SoftwareVersionLabel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SoftwareVersionLabel, typeof(SoftwareVersionLabel.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.SoftwareVersionLabel, () => new SoftwareVersionLabel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SoftwareVersionLabel, () => new SoftwareVersionLabel.GetReply());
 
         //BootSoftwareVersionId
-        RegisterPacketType(RdmCommands.Get, RdmParameters.BootSoftwareVersionId, typeof(BootSoftwareVersionId.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionId, typeof(BootSoftwareVersionId.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.BootSoftwareVersionId, () => new BootSoftwareVersionId.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionId, () => new BootSoftwareVersionId.GetReply());
 
         //SoftwareVersionLabel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.BootSoftwareVersionLabel, typeof(BootSoftwareVersionLabel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionLabel, typeof(BootSoftwareVersionLabel.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.BootSoftwareVersionLabel, () => new BootSoftwareVersionLabel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionLabel, () => new BootSoftwareVersionLabel.GetReply());
     }
 
-    private static void RegisterPowerMessages()
+    private void RegisterPowerMessages()
     {
         //DeviceHours
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceHours, typeof(DeviceHours.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceHours, typeof(DeviceHours.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DeviceHours, typeof(DeviceHours.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DeviceHours, typeof(DeviceHours.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DeviceHours, () => new DeviceHours.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DeviceHours, () => new DeviceHours.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DeviceHours, () => new DeviceHours.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DeviceHours, () => new DeviceHours.SetReply());
 
         //LampHours
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LampHours, typeof(LampHours.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampHours, typeof(LampHours.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LampHours, typeof(LampHours.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampHours, typeof(LampHours.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LampHours, () => new LampHours.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampHours, () => new LampHours.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LampHours, () => new LampHours.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampHours, () => new LampHours.SetReply());
 
         //LampStrikes
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LampStrikes, typeof(LampStrikes.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampStrikes, typeof(LampStrikes.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LampStrikes, typeof(LampStrikes.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampStrikes, typeof(LampStrikes.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LampStrikes, () => new LampStrikes.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampStrikes, () => new LampStrikes.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LampStrikes, () => new LampStrikes.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampStrikes, () => new LampStrikes.SetReply());
 
         //LampState
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LampState, typeof(LampState.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampState, typeof(LampState.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LampState, typeof(LampState.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampState, typeof(LampState.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LampState, () => new LampState.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampState, () => new LampState.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LampState, () => new LampState.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampState, () => new LampState.SetReply());
 
         //LampOnMode
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LampOnMode, typeof(LampOnMode.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampOnMode, typeof(LampOnMode.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LampOnMode, typeof(LampOnMode.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampOnMode, typeof(LampOnMode.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LampOnMode, () => new LampOnMode.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LampOnMode, () => new LampOnMode.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LampOnMode, () => new LampOnMode.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LampOnMode, () => new LampOnMode.SetReply());
 
         //DevicePowerCycles
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DevicePowerCycles, typeof(DevicePowerCycles.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DevicePowerCycles, typeof(DevicePowerCycles.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DevicePowerCycles, typeof(DevicePowerCycles.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DevicePowerCycles, typeof(DevicePowerCycles.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DevicePowerCycles, () => new DevicePowerCycles.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DevicePowerCycles, () => new DevicePowerCycles.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DevicePowerCycles, () => new DevicePowerCycles.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DevicePowerCycles, () => new DevicePowerCycles.SetReply());
 
         //BurnIn
-        RegisterPacketType(RdmCommands.Get, RdmParameters.BurnIn, typeof(BurnIn.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BurnIn, typeof(BurnIn.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.BurnIn, typeof(BurnIn.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.BurnIn, typeof(BurnIn.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.BurnIn, () => new BurnIn.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.BurnIn, () => new BurnIn.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.BurnIn, () => new BurnIn.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.BurnIn, () => new BurnIn.SetReply());
     }
 
-    private static void RegisterDmxMessages()
+    private void RegisterDmxMessages()
     {
         //DmxPersonality
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxPersonality, typeof(DmxPersonality.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxPersonality, typeof(DmxPersonality.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxPersonality, typeof(DmxPersonality.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxPersonality, typeof(DmxPersonality.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxPersonality, () => new DmxPersonality.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxPersonality, () => new DmxPersonality.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxPersonality, () => new DmxPersonality.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxPersonality, () => new DmxPersonality.SetReply());
 
         //DmxPersonalityDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxPersonalityDescription, typeof(DmxPersonalityDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxPersonalityDescription, typeof(DmxPersonalityDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxPersonalityDescription, () => new DmxPersonalityDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxPersonalityDescription, () => new DmxPersonalityDescription.GetReply());
 
         //DmxStartAddress
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxStartAddress, typeof(DmxStartAddress.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxStartAddress, typeof(DmxStartAddress.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxStartAddress, typeof(DmxStartAddress.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxStartAddress, typeof(DmxStartAddress.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxStartAddress, () => new DmxStartAddress.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxStartAddress, () => new DmxStartAddress.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxStartAddress, () => new DmxStartAddress.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxStartAddress, () => new DmxStartAddress.SetReply());
 
         //DmxBlockAddress
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxBlockAddress, typeof(DmxBlockAddress.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxBlockAddress, typeof(DmxBlockAddress.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxBlockAddress, typeof(DmxBlockAddress.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxBlockAddress, typeof(DmxBlockAddress.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxBlockAddress, () => new DmxBlockAddress.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxBlockAddress, () => new DmxBlockAddress.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxBlockAddress, () => new DmxBlockAddress.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxBlockAddress, () => new DmxBlockAddress.SetReply());
 
         //SlotInfo
-        RegisterPacketType(RdmCommands.Get, RdmParameters.SlotInfo, typeof(SlotInfo.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SlotInfo, typeof(SlotInfo.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.SlotInfo, () => new SlotInfo.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SlotInfo, () => new SlotInfo.GetReply());
 
         //SlotDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.SlotDescription, typeof(SlotDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SlotDescription, typeof(SlotDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.SlotDescription, () => new SlotDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SlotDescription, () => new SlotDescription.GetReply());
 
         //DefaultSlotValue
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DefaultSlotValue, typeof(DefaultSlotValue.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DefaultSlotValue, typeof(DefaultSlotValue.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DefaultSlotValue, () => new DefaultSlotValue.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DefaultSlotValue, () => new DefaultSlotValue.GetReply());
 
         //DmxStartupMode
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxStartupMode, typeof(DmxStartupMode.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxStartupMode, typeof(DmxStartupMode.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxStartupMode, typeof(DmxStartupMode.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxStartupMode, typeof(DmxStartupMode.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DmxStartupMode, () => new DmxStartupMode.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DmxStartupMode, () => new DmxStartupMode.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DmxStartupMode, () => new DmxStartupMode.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DmxStartupMode, () => new DmxStartupMode.SetReply());
     }
 
-    private static void RegisterDimmerMessages()
+    private void RegisterDimmerMessages()
     {
         //Curve
-        RegisterPacketType(RdmCommands.Get, RdmParameters.Curve, typeof(Curve.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.Curve, typeof(Curve.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.Curve, typeof(Curve.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.Curve, typeof(Curve.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.Curve, () => new Curve.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.Curve, () => new Curve.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.Curve, () => new Curve.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.Curve, () => new Curve.SetReply());
 
         //CurveDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.CurveDescription, typeof(CurveDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.CurveDescription, typeof(CurveDescription.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.CurveDescription, typeof(CurveDescription.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.CurveDescription, typeof(CurveDescription.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.CurveDescription, () => new CurveDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.CurveDescription, () => new CurveDescription.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.CurveDescription, () => new CurveDescription.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.CurveDescription, () => new CurveDescription.SetReply());
 
         //DimmerInfo
-        RegisterPacketType(RdmCommands.Get, RdmParameters.DimmerInfo, typeof(DimmerInfo.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DimmerInfo, typeof(DimmerInfo.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.DimmerInfo, typeof(DimmerInfo.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DimmerInfo, typeof(DimmerInfo.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.DimmerInfo, () => new DimmerInfo.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.DimmerInfo, () => new DimmerInfo.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.DimmerInfo, () => new DimmerInfo.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.DimmerInfo, () => new DimmerInfo.SetReply());
 
         //MaximumLevel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.MaximumLevel, typeof(MaximumLevel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.MaximumLevel, typeof(MaximumLevel.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.MaximumLevel, typeof(MaximumLevel.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.MaximumLevel, typeof(MaximumLevel.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.MaximumLevel, () => new MaximumLevel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.MaximumLevel, () => new MaximumLevel.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.MaximumLevel, () => new MaximumLevel.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.MaximumLevel, () => new MaximumLevel.SetReply());
 
         //MinimumLevel
-        RegisterPacketType(RdmCommands.Get, RdmParameters.MinimumLevel, typeof(MinimumLevel.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.MinimumLevel, typeof(MinimumLevel.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.MinimumLevel, typeof(MinimumLevel.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.MinimumLevel, typeof(MinimumLevel.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.MinimumLevel, () => new MinimumLevel.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.MinimumLevel, () => new MinimumLevel.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.MinimumLevel, () => new MinimumLevel.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.MinimumLevel, () => new MinimumLevel.SetReply());
 
         //ModulationFrequency
-        RegisterPacketType(RdmCommands.Get, RdmParameters.ModulationFrequency, typeof(ModulationFrequency.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ModulationFrequency, typeof(ModulationFrequency.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.ModulationFrequency, typeof(ModulationFrequency.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ModulationFrequency, typeof(ModulationFrequency.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.ModulationFrequency, () => new ModulationFrequency.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ModulationFrequency, () => new ModulationFrequency.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.ModulationFrequency, () => new ModulationFrequency.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ModulationFrequency, () => new ModulationFrequency.SetReply());
 
         //ModulationFrequencyDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.ModulationFrequencyDescription, typeof(ModulationFrequencyDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ModulationFrequencyDescription, typeof(ModulationFrequencyDescription.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.ModulationFrequencyDescription, typeof(ModulationFrequencyDescription.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ModulationFrequencyDescription, typeof(ModulationFrequencyDescription.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.ModulationFrequencyDescription, () => new ModulationFrequencyDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.ModulationFrequencyDescription, () => new ModulationFrequencyDescription.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.ModulationFrequencyDescription, () => new ModulationFrequencyDescription.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ModulationFrequencyDescription, () => new ModulationFrequencyDescription.SetReply());
 
         //OutputResponseTime
-        RegisterPacketType(RdmCommands.Get, RdmParameters.OutputResponseTime, typeof(OutputResponseTime.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.OutputResponseTime, typeof(OutputResponseTime.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.OutputResponseTime, typeof(OutputResponseTime.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.OutputResponseTime, typeof(OutputResponseTime.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.OutputResponseTime, () => new OutputResponseTime.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.OutputResponseTime, () => new OutputResponseTime.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.OutputResponseTime, () => new OutputResponseTime.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.OutputResponseTime, () => new OutputResponseTime.SetReply());
 
         //OutputResponseTimeDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.OutputResponseTimeDescription, typeof(OutputResponseTimeDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.OutputResponseTimeDescription, typeof(OutputResponseTimeDescription.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.OutputResponseTimeDescription, typeof(OutputResponseTimeDescription.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.OutputResponseTimeDescription, typeof(OutputResponseTimeDescription.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.OutputResponseTimeDescription, () => new OutputResponseTimeDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.OutputResponseTimeDescription, () => new OutputResponseTimeDescription.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.OutputResponseTimeDescription, () => new OutputResponseTimeDescription.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.OutputResponseTimeDescription, () => new OutputResponseTimeDescription.SetReply());
     }
 
-    private static void RegisterControlMessages()
+    private void RegisterControlMessages()
     {
         //IdentifyDevice
-        RegisterPacketType(RdmCommands.Get, RdmParameters.IdentifyDevice, typeof(IdentifyDevice.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.IdentifyDevice, typeof(IdentifyDevice.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.IdentifyDevice, typeof(IdentifyDevice.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.IdentifyDevice, typeof(IdentifyDevice.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.IdentifyDevice, () => new IdentifyDevice.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.IdentifyDevice, () => new IdentifyDevice.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.IdentifyDevice, () => new IdentifyDevice.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.IdentifyDevice, () => new IdentifyDevice.SetReply());
 
         //IdentifyMode
-        RegisterPacketType(RdmCommands.Get, RdmParameters.IdentifyMode, typeof(IdentifyMode.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.IdentifyMode, typeof(IdentifyMode.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.IdentifyMode, typeof(IdentifyMode.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.IdentifyMode, typeof(IdentifyMode.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.IdentifyMode, () => new IdentifyMode.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.IdentifyMode, () => new IdentifyMode.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.IdentifyMode, () => new IdentifyMode.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.IdentifyMode, () => new IdentifyMode.SetReply());
 
         //ResetDevice
-        RegisterPacketType(RdmCommands.Set, RdmParameters.ResetDevice, typeof(ResetDevice.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ResetDevice, typeof(ResetDevice.SetReply));
+        RegisterPacketType(RdmCommands.Set, RdmParameters.ResetDevice, () => new ResetDevice.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.ResetDevice, () => new ResetDevice.SetReply());
 
         //PowerState
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PowerState, typeof(PowerState.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PowerState, typeof(PowerState.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PowerState, typeof(PowerState.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PowerState, typeof(PowerState.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PowerState, () => new PowerState.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PowerState, () => new PowerState.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PowerState, () => new PowerState.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PowerState, () => new PowerState.SetReply());
 
         //PerformSelfTest
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PerformSelfTest, typeof(PerformSelfTest.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PerformSelfTest, typeof(PerformSelfTest.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PerformSelfTest, typeof(PerformSelfTest.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PerformSelfTest, typeof(PerformSelfTest.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PerformSelfTest, () => new PerformSelfTest.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PerformSelfTest, () => new PerformSelfTest.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PerformSelfTest, () => new PerformSelfTest.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PerformSelfTest, () => new PerformSelfTest.SetReply());
 
         //PowerOnSelfTest
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PowerOnSelfTest, typeof(PowerOnSelfTest.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PowerOnSelfTest, typeof(PowerOnSelfTest.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PowerOnSelfTest, typeof(PowerOnSelfTest.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PowerOnSelfTest, typeof(PowerOnSelfTest.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PowerOnSelfTest, () => new PowerOnSelfTest.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PowerOnSelfTest, () => new PowerOnSelfTest.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PowerOnSelfTest, () => new PowerOnSelfTest.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PowerOnSelfTest, () => new PowerOnSelfTest.SetReply());
 
         //SelfTestDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.SelfTestDescription, typeof(SelfTestDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SelfTestDescription, typeof(SelfTestDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.SelfTestDescription, () => new SelfTestDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.SelfTestDescription, () => new SelfTestDescription.GetReply());
 
         //CapturePreset
-        RegisterPacketType(RdmCommands.Set, RdmParameters.CapturePreset, typeof(CapturePreset.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.CapturePreset, typeof(CapturePreset.SetReply));
+        RegisterPacketType(RdmCommands.Set, RdmParameters.CapturePreset, () => new CapturePreset.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.CapturePreset, () => new CapturePreset.SetReply());
 
         //PresetPlayback
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetPlayback, typeof(PresetPlayback.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetPlayback, typeof(PresetPlayback.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetPlayback, typeof(PresetPlayback.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetPlayback, typeof(PresetPlayback.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetPlayback, () => new PresetPlayback.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetPlayback, () => new PresetPlayback.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetPlayback, () => new PresetPlayback.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetPlayback, () => new PresetPlayback.SetReply());
 
         //Preset Info
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetInfo, typeof(PresetInfo.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetInfo, typeof(PresetInfo.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetInfo, () => new PresetInfo.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetInfo, () => new PresetInfo.GetReply());
 
         //Preset Status
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetStatus, typeof(PresetStatus.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetStatus, typeof(PresetStatus.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetStatus, typeof(PresetStatus.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetStatus, typeof(PresetStatus.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetStatus, () => new PresetStatus.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetStatus, () => new PresetStatus.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetStatus, () => new PresetStatus.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetStatus, () => new PresetStatus.SetReply());
 
         //Preset Merge Mode
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetMergeMode, typeof(PresetMergeMode.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetMergeMode, typeof(PresetMergeMode.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetMergeMode, typeof(PresetMergeMode.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetMergeMode, typeof(PresetMergeMode.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PresetMergeMode, () => new PresetMergeMode.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PresetMergeMode, () => new PresetMergeMode.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PresetMergeMode, () => new PresetMergeMode.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PresetMergeMode, () => new PresetMergeMode.SetReply());
     }
 
-    private static void RegisterConfigurationMessages()
+    private void RegisterConfigurationMessages()
     {
         //LockState
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LockState, typeof(LockState.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockState, typeof(LockState.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LockState, typeof(LockState.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LockState, typeof(LockState.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LockState, () => new LockState.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockState, () => new LockState.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LockState, () => new LockState.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LockState, () => new LockState.SetReply());
 
         //LockPin
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LockPin, typeof(LockPin.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockPin, typeof(LockPin.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.LockPin, typeof(LockPin.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LockPin, typeof(LockPin.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LockPin, () => new LockPin.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockPin, () => new LockPin.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.LockPin, () => new LockPin.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.LockPin, () => new LockPin.SetReply());
 
         //LockStateDescription
-        RegisterPacketType(RdmCommands.Get, RdmParameters.LockStateDescription, typeof(LockStateDescription.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockStateDescription, typeof(LockStateDescription.GetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.LockStateDescription, () => new LockStateDescription.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.LockStateDescription, () => new LockStateDescription.GetReply());
 
         //PanInvert
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PanInvert, typeof(PanInvert.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PanInvert, typeof(PanInvert.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PanInvert, typeof(PanInvert.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PanInvert, typeof(PanInvert.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PanInvert, () => new PanInvert.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PanInvert, () => new PanInvert.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PanInvert, () => new PanInvert.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PanInvert, () => new PanInvert.SetReply());
 
         //TiltInvert
-        RegisterPacketType(RdmCommands.Get, RdmParameters.TiltInvert, typeof(TiltInvert.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.TiltInvert, typeof(TiltInvert.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.TiltInvert, typeof(TiltInvert.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.TiltInvert, typeof(TiltInvert.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.TiltInvert, () => new TiltInvert.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.TiltInvert, () => new TiltInvert.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.TiltInvert, () => new TiltInvert.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.TiltInvert, () => new TiltInvert.SetReply());
 
         //PanTiltSwap
-        RegisterPacketType(RdmCommands.Get, RdmParameters.PanTiltSwap, typeof(PanTiltSwap.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PanTiltSwap, typeof(PanTiltSwap.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.PanTiltSwap, typeof(PanTiltSwap.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PanTiltSwap, typeof(PanTiltSwap.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.PanTiltSwap, () => new PanTiltSwap.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.PanTiltSwap, () => new PanTiltSwap.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.PanTiltSwap, () => new PanTiltSwap.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.PanTiltSwap, () => new PanTiltSwap.SetReply());
 
         //RealTimeClock
-        RegisterPacketType(RdmCommands.Get, RdmParameters.RealTimeClock, typeof(RealTimeClock.Get));
-        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.RealTimeClock, typeof(RealTimeClock.GetReply));
-        RegisterPacketType(RdmCommands.Set, RdmParameters.RealTimeClock, typeof(RealTimeClock.Set));
-        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.RealTimeClock, typeof(RealTimeClock.SetReply));
+        RegisterPacketType(RdmCommands.Get, RdmParameters.RealTimeClock, () => new RealTimeClock.Get());
+        RegisterPacketType(RdmCommands.GetResponse, RdmParameters.RealTimeClock, () => new RealTimeClock.GetReply());
+        RegisterPacketType(RdmCommands.Set, RdmParameters.RealTimeClock, () => new RealTimeClock.Set());
+        RegisterPacketType(RdmCommands.SetResponse, RdmParameters.RealTimeClock, () => new RealTimeClock.SetReply());
     }
 
-    private struct PacketKey : IEquatable<PacketKey>
-    {
-        public PacketKey(RdmCommands command, RdmParameters parameter)
-        {
-            Command = command;
-            Parameter = parameter;
-        }
+    
 
-        public RdmCommands Command;
-        public RdmParameters Parameter;
-
-        public bool Equals(PacketKey other)
-        {
-            return Command == other.Command && Parameter == other.Parameter;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is PacketKey other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine((int)Command, (int)Parameter);
-        }
-    }
-
-    private static readonly Dictionary<PacketKey, Type> packetStore = new Dictionary<PacketKey, Type>();
+    private readonly Dictionary<PacketKey, Func<RdmPacket>> packetStore = new Dictionary<PacketKey, Func<RdmPacket>>();
 
     /// <summary>
     /// Registering RDM packet
     /// </summary>
     /// <param name="command"></param>
     /// <param name="parameter"></param>
-    /// <param name="packetType"></param>
+    /// <param name="packetCreator"></param>
     /// <returns>true if success, false if packet is already registered</returns>
     /// <exception cref="InvalidOperationException"></exception>
-    public static bool RegisterPacketType(RdmCommands command, RdmParameters parameter, Type packetType)
+    public bool RegisterPacketType(RdmCommands command, RdmParameters parameter, Func<RdmPacket> packetCreator)
     {
         PacketKey key = new PacketKey
         {
@@ -499,55 +473,87 @@ public static class RdmPacketFactory
             Parameter = parameter
         };
 
-        return packetStore.TryAdd(key, packetType);
+        return packetStore.TryAdd(key, packetCreator);
         //    throw new InvalidOperationException(
         //        $"The packet {parameter.ToString()} is already registered for {command.ToString()}.");
     }
-
-    public static RdmPacket? Build(RdmHeader header)
+    
+    public RdmPacket? Build(RdmBinaryReader data)
     {
-        if (IsErrorResponse(header))
+        var messageLength = data.ReadByte();
+        var destinationId = data.ReadUId();
+        var sourceId = data.ReadUId();
+        var transactionNumber = data.ReadByte();
+        var portOrResponseType = data.ReadByte();
+        var messageCount = data.ReadByte();
+        var subDevice = data.ReadInt16();
+        var command = (RdmCommands)data.ReadByte();
+        var parameterId = (RdmParameters)data.ReadInt16();
+        var parameterDataLength = data.ReadByte();
+
+        PacketKey packetKey = new PacketKey(command, parameterId);
+        
+        if (IsErrorResponse(packetKey))
         {
             //Error Response Packets
-            return BuildErrorResponse(header);
+            //return BuildErrorResponse(packetKey);
+            
+            return null;
         }
 
-        if (packetStore.TryGetValue(new PacketKey(header.Command, header.ParameterId), out var packetType))
+        if (!packetStore.TryGetValue(packetKey, out var packetCreator))
         {
-            return RdmPacket.Create(header, packetType);
+            return null;
         }
 
-        return null;
+        var packet = packetCreator();
+        packet.MessageLength = messageLength;
+        packet.DestinationId = destinationId;
+        packet.SourceId = sourceId;
+        packet.TransactionNumber = transactionNumber;
+        packet.PortOrResponseType = portOrResponseType;
+        packet.MessageCount = messageCount;
+        packet.SubDevice = subDevice;
+        packet.Command = command;
+        packet.ParameterId = parameterId;
+        packet.ParameterDataLength = parameterDataLength;
+        
+        packet.ParseData(data);
+        
+        return  packet;
     }
+    
+    
 
-    public static bool IsErrorResponse(RdmHeader header)
+    public static bool IsErrorResponse(PacketKey packetKey)
     {
-        return IsResponse(header) && (RdmResponseTypes)header.PortOrResponseType switch
-        {
-            RdmResponseTypes.Ack or RdmResponseTypes.AckOverflow => false,
-            _ => true
-        };
+        return IsResponse(packetKey);
+        //        && (RdmResponseTypes)header.PortOrResponseType switch
+        // {
+        //     RdmResponseTypes.Ack or RdmResponseTypes.AckOverflow => false,
+        //     _ => true
+        // };
     }
 
-    public static bool IsResponse(RdmHeader header)
+    public static bool IsResponse(PacketKey packetKey)
     {
-        return header.Command == RdmCommands.GetResponse || header.Command == RdmCommands.SetResponse;
+        return packetKey.Command is RdmCommands.GetResponse or RdmCommands.SetResponse;
     }
 
-    public static RdmPacket? BuildErrorResponse(RdmHeader header)
-    {
-        if (header.PortOrResponseType != 0)
-        {
-            switch ((RdmResponseTypes)header.PortOrResponseType)
-            {
-                case RdmResponseTypes.AckTimer:
-                    return RdmPacket.Create(header, typeof(RdmAckTimer));
-                case RdmResponseTypes.NackReason:
-                    return RdmPacket.Create(header, typeof(RdmNack));
-            }
-        }
-
-        return null;
-    }
+    // public static RdmPacket? BuildErrorResponse(RdmHeader header)
+    // {
+    //     if (header.PortOrResponseType != 0)
+    //     {
+    //         switch ((RdmResponseTypes)header.PortOrResponseType)
+    //         {
+    //             case RdmResponseTypes.AckTimer:
+    //                 return RdmPacket.Create(header, () => new RdmAckTimer());
+    //             case RdmResponseTypes.NackReason:
+    //                 return RdmPacket.Create(header, () => new RdmNack());
+    //         }
+    //     }
+    //
+    //     return null;
+    // }
 
 }

@@ -47,7 +47,7 @@ public class RdmSample : SampleRdmBase
                 if (e.Packet is ArtRdmPacket rdmPacket)
                 {
                     var reader = new RdmBinaryReader(new MemoryStream(rdmPacket.RdmData));
-                    RdmPacket rdm = RdmPacket.ReadPacket(reader);
+                    RdmPacket rdm = RdmPacket.Parse(reader);
                     if (rdm is DeviceLabel.GetReply deviceLabel)
                     {
                         Console.WriteLine($"{deviceCount--} Response from device: {deviceLabel.Header.SourceId} Label='{deviceLabel.Label}'");

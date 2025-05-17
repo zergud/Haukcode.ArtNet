@@ -32,7 +32,7 @@ public abstract class RdmPacket
 
     public RdmParameters ParameterId { get; set; }
 
-    public byte ParameterDataLength { get; protected set; }
+    public byte ParameterDataLength { get; set; }
 
     public short Checksum { get; set; }
 
@@ -40,31 +40,10 @@ public abstract class RdmPacket
 
     #region Read and Write
 
-    protected abstract void ReadData(RdmBinaryReader data);
+    protected internal abstract void ParseData(RdmBinaryReader data);
 
     protected abstract void WriteData(RdmBinaryWriter data);
 
-    // public static RdmPacket ReadPacket(RdmBinaryReader data)
-    // {
-    //     RdmHeader header = new RdmHeader();
-    //     header.ReadData(data);
-    //
-    //     var rdmPacket = Create(header);
-    //     if (rdmPacket != null)
-    //     {
-    //         rdmPacket.ReadData(data);
-    //         return rdmPacket;
-    //     }
-    //
-    //     rdmPacket = RdmPacket.Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
-    //     if (rdmPacket != null)
-    //     {
-    //         rdmPacket.ReadData(data);
-    //         return rdmPacket;
-    //     }
-    //
-    //     throw new UnknownRdmPacketException(header);            
-    // }
 
     public static RdmPacket? ReadPacket(RdmCommands command, RdmParameters parameterId, RdmBinaryReader contentData)
     {
@@ -95,7 +74,7 @@ public abstract class RdmPacket
         throw new UnknownRdmPacketException(header);
     }
 
-    public void ReadPacket(RdmBinaryReader data)
+    public void Parse(RdmBinaryReader data)
     {
         MessageLength = data.ReadByte();
         DestinationId = data.ReadUId();
@@ -108,7 +87,7 @@ public abstract class RdmPacket
         ParameterId = (RdmParameters)data.ReadInt16();
         ParameterDataLength = data.ReadByte();
 
-        ReadData(data);
+        ParseData(data);
     }
 
     public static RdmRawPacket? ReadPacketRaw(RdmBinaryReader data)
@@ -162,22 +141,5 @@ public abstract class RdmPacket
 
     #endregion
 
-    public static RdmPacket? Create(RdmHeader header)
-    {
-        return RdmPacketFactory.Build(header);
-    }
 
-    public static RdmPacket? Create(RdmHeader header, Type packetType)
-    {
-        object? obj = Activator.CreateInstance(packetType);
-        if (obj == null)
-        {
-            return null;
-        }
-
-        RdmPacket packet = (RdmPacket)obj;
-        packet.Header = header;
-
-        return packet;
-    }
 }
