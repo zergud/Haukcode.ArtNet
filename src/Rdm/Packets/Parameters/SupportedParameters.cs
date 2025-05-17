@@ -12,11 +12,11 @@ public class SupportedParameters
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
     }
@@ -34,7 +34,7 @@ public class SupportedParameters
         /// </summary>
         public List<RdmParameters> ParameterIds { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             for (int n = 0; n < base.ParameterDataLength / 2; n++)
             {
@@ -42,7 +42,7 @@ public class SupportedParameters
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             foreach (RdmParameters parameterId in ParameterIds)
                 data.WriteUInt16((ushort)parameterId);

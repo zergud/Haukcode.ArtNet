@@ -11,12 +11,12 @@ public class EndpointDevices
 
         public short EndpointID { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
         }
@@ -42,7 +42,7 @@ public class EndpointDevices
         }
 
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             ListChangeNumber = data.ReadHiLoInt32();
@@ -53,7 +53,7 @@ public class EndpointDevices
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteHiLoInt32(ListChangeNumber);

@@ -6,53 +6,20 @@
 /// </summary>
 public class DefaultSlotValue
 {
-    public struct SlotValue
+    public struct SlotValue(short offset, byte value)
     {
-        public SlotValue(short offset, byte value)
-            : this()
-        {
-            Offset = offset;
-            Value = value;
-        }
+        public short Offset { get; set; } = offset;
 
-        public short Offset { get; set; }
-
-        public byte Value { get; set; }
+        public byte Value { get; set; } = value;
     }
 
-    public class Get : RdmResponsePacket
+    public class Get() : RdmResponsePacket(RdmCommands.Get, RdmParameters.DefaultSlotValue);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.DefaultSlotValue)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.DefaultSlotValue)
-        {
-        }
+        public List<SlotValue> DefaultValues { get; set; } = new();
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.DefaultSlotValue)
-        {
-            DefaultValues = new List<SlotValue>();
-        }
-
-        public List<SlotValue> DefaultValues { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             for (int n = 0; n < ParameterDataLength / 3; n++)
             {
@@ -63,15 +30,13 @@ public class DefaultSlotValue
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             foreach (SlotValue value in DefaultValues)
             {
-                data.WriteUInt16(value.Offset);
+                data.WriteInt16(value.Offset);
                 data.WriteByte(value.Value);
             }
         }
-
-        #endregion
     }
 }

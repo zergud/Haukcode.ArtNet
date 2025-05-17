@@ -30,12 +30,12 @@ public class EndpointToUniverse
 
         public short EndpointID { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
         }
@@ -69,7 +69,7 @@ public class EndpointToUniverse
 
         public UniverseMode EndpointMode { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
 
@@ -92,7 +92,7 @@ public class EndpointToUniverse
 
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
 
@@ -139,7 +139,7 @@ public class EndpointToUniverse
 
         public UniverseMode EndpointMode { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
 
@@ -160,7 +160,7 @@ public class EndpointToUniverse
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
 
@@ -186,12 +186,12 @@ public class EndpointToUniverse
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             //Parameter Data Empty
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             //Parameter Data Empty
         }

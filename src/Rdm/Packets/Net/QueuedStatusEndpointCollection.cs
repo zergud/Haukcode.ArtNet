@@ -15,13 +15,13 @@ public class QueuedStatusEndpointCollection
 
         public StatusTypes StatusType { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             StatusType = (StatusTypes) data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteByte((byte) StatusType);
@@ -35,12 +35,12 @@ public class QueuedStatusEndpointCollection
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             //Parameter Data Empty
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             //Parameter Data Empty
         }

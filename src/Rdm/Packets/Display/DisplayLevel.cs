@@ -14,11 +14,11 @@ public class DisplayLevel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -36,12 +36,12 @@ public class DisplayLevel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Level = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(Level);
         }
@@ -60,12 +60,12 @@ public class DisplayLevel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Level = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(Level);
         }
@@ -82,11 +82,11 @@ public class DisplayLevel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 

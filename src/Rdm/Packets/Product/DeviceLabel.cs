@@ -15,11 +15,11 @@ public class DeviceLabel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -35,17 +35,14 @@ public class DeviceLabel
 
         public string? Label { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Label = data.ReadString(ParameterDataLength);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            if (Label != null)
-            {
-                data.WriteBytes(Encoding.ASCII.GetBytes(Label));
-            }
+            data.WriteString(Label);
         }
     }
 
@@ -60,17 +57,14 @@ public class DeviceLabel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Label = Encoding.ASCII.GetString(data.ReadBytes(ParameterDataLength));
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            if (Label != null)
-            {
-                data.WriteBytes(Encoding.ASCII.GetBytes(Label));
-            }
+            data.WriteString(Label);
         }
 
         #endregion
@@ -85,11 +79,11 @@ public class DeviceLabel
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 

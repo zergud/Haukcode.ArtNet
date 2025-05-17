@@ -112,12 +112,12 @@ public class SensorDefinition
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
         }
@@ -154,7 +154,7 @@ public class SensorDefinition
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
             Type = (SensorTypes) data.ReadByte();
@@ -168,7 +168,7 @@ public class SensorDefinition
             Description = data.ReadString(ParameterDataLength-13);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
             data.WriteByte((byte) Type);

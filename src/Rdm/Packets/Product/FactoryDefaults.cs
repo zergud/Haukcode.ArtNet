@@ -15,11 +15,11 @@ public class FactoryDefaults
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -37,12 +37,12 @@ public class FactoryDefaults
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IsFactoryDefaults = data.ReadBool();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(IsFactoryDefaults);
         }
@@ -59,11 +59,11 @@ public class FactoryDefaults
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -79,11 +79,11 @@ public class FactoryDefaults
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 

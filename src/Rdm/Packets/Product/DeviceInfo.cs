@@ -15,11 +15,11 @@ public class DeviceInfo
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -55,7 +55,7 @@ public class DeviceInfo
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             RdmProtocolVersion = data.ReadInt16();
             DeviceModelId = data.ReadInt16();
@@ -69,7 +69,7 @@ public class DeviceInfo
             SensorCount = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(RdmProtocolVersion);
             data.WriteUInt16(DeviceModelId);

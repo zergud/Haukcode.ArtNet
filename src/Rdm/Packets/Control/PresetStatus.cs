@@ -1,84 +1,9 @@
-﻿namespace Haukcode.ArtNet.Rdm.Packets.DMX;
+﻿namespace Haukcode.ArtNet.Rdm.Packets.Control;
 
 public class PresetStatus
 {
-    public class Get : RdmRequestPacket
-    {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.PresetStatus)
-        {
-        }
-        
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.PresetStatus)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class Set : RdmRequestPacket
-    {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.PresetStatus)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.PresetStatus)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.PresetStatus);
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.PresetStatus);
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.PresetStatus);
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.PresetStatus);
 }

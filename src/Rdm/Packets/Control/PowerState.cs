@@ -14,91 +14,31 @@ public class PowerState
         Normal = 0xffff
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.PowerState);
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.PowerState)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.PowerState)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.PowerState)
-        {
-        }
-
         public States State { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             State = (States)data.ReadByte();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte) State);
         }
-
-        #endregion
     }
-
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.PowerState)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.PowerState)
-        {
-        }
-
         public States State { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             State = (States)data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte)State);
         }
-
-        #endregion
     }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.PowerState)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.PowerState);
 }

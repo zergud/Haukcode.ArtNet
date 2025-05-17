@@ -11,12 +11,12 @@ public class BindingControlFields
 
         public UId? Id { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Id = data.ReadUId();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUid(Id);
         }
@@ -37,7 +37,7 @@ public class BindingControlFields
 
         public UId? BindingId { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Id = data.ReadUId();
             EndpointID = data.ReadInt16();
@@ -45,7 +45,7 @@ public class BindingControlFields
             BindingId = data.ReadUId();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUid(Id);
             data.WriteUInt16(EndpointID);

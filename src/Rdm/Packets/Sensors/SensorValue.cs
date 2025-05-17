@@ -13,12 +13,12 @@ public class SensoreValue
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
         }
@@ -45,7 +45,7 @@ public class SensoreValue
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
             PresentValue = data.ReadInt16();
@@ -54,7 +54,7 @@ public class SensoreValue
             RecordedValue = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
             data.WriteUInt16(PresentValue);
@@ -77,12 +77,12 @@ public class SensoreValue
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
         }
@@ -109,7 +109,7 @@ public class SensoreValue
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SensorNumber = data.ReadByte();
             PresentValue = data.ReadInt16();
@@ -118,7 +118,7 @@ public class SensoreValue
             RecordedValue = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SensorNumber);
             data.WriteUInt16(PresentValue);

@@ -56,41 +56,41 @@ public class RdmHeader
     public void WriteData(RdmBinaryWriter data)
     {
         // Save position so we can write length later.
-        messageLengthPosition = data.BaseStream.Position;
-
-        data.WriteByte(MessageLength);
-        data.WriteUid(DestinationId);
-        data.WriteUid(SourceId);
-        data.WriteByte(TransactionNumber);
-        data.WriteByte(PortOrResponseType);
-        data.WriteByte(MessageCount);
-        data.WriteUInt16(SubDevice);
-        data.WriteByte((byte)Command);
-        data.WriteUInt16((short)ParameterId);
-
-        // Save position so we can write length later.
-        dataLengthPosition = data.BaseStream.Position;
-        data.WriteByte(ParameterDataLength);
+        // messageLengthPosition = data.BaseStream.Position;
+        //
+        // data.WriteByte(MessageLength);
+        // data.WriteUid(DestinationId);
+        // data.WriteUid(SourceId);
+        // data.WriteByte(TransactionNumber);
+        // data.WriteByte(PortOrResponseType);
+        // data.WriteByte(MessageCount);
+        // data.WriteUInt16(SubDevice);
+        // data.WriteByte((byte)Command);
+        // data.WriteUInt16((short)ParameterId);
+        //
+        // // Save position so we can write length later.
+        // dataLengthPosition = data.BaseStream.Position;
+        // data.WriteByte(ParameterDataLength);
     }
 
     public void WriteLength(RdmBinaryWriter data)
     {
-        if (messageLengthPosition < 0 || dataLengthPosition <= 0)
-            throw new InvalidOperationException("Packet data has not been written yet. You can not write the length until the body is written.");
-
-        MessageLength = (byte)(data.BaseStream.Position - messageLengthPosition + 2);
-        ParameterDataLength = (byte)((data.BaseStream.Position - 1) - dataLengthPosition);
-
-        //Write Message Length
-        data.BaseStream.Seek(messageLengthPosition, System.IO.SeekOrigin.Begin);
-        data.WriteByte(MessageLength);
-
-        //Write Parameter Data Length
-        data.BaseStream.Seek(dataLengthPosition, System.IO.SeekOrigin.Begin);
-        data.WriteByte(ParameterDataLength);
-
-        //Move back to end of stream.
-        data.BaseStream.Seek(0, System.IO.SeekOrigin.End);
+        // if (messageLengthPosition < 0 || dataLengthPosition <= 0)
+        //     throw new InvalidOperationException("Packet data has not been written yet. You can not write the length until the body is written.");
+        //
+        // MessageLength = (byte)(data.BaseStream.Position - messageLengthPosition + 2);
+        // ParameterDataLength = (byte)((data.BaseStream.Position - 1) - dataLengthPosition);
+        //
+        // //Write Message Length
+        // data.BaseStream.Seek(messageLengthPosition, System.IO.SeekOrigin.Begin);
+        // data.WriteByte(MessageLength);
+        //
+        // //Write Parameter Data Length
+        // data.BaseStream.Seek(dataLengthPosition, System.IO.SeekOrigin.Begin);
+        // data.WriteByte(ParameterDataLength);
+        //
+        // //Move back to end of stream.
+        // data.BaseStream.Seek(0, System.IO.SeekOrigin.End);
     }
     
     #endregion

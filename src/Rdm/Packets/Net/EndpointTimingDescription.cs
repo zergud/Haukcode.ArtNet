@@ -11,12 +11,12 @@ public class EndpointTimingDescription
 
         public byte SettingIndex { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SettingIndex = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SettingIndex);
         }
@@ -33,13 +33,13 @@ public class EndpointTimingDescription
 
         public string? Description { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SettingIndex = data.ReadByte();
             Description = data.ReadString(ParameterDataLength - 1);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(SettingIndex);
             data.WriteString(Description);

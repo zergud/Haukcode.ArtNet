@@ -63,12 +63,12 @@ public class StatusMessage
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             StatusType = (StatusTypes)data.ReadByte(); ;
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte)StatusType);
         }
@@ -89,7 +89,7 @@ public class StatusMessage
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             for (int n = 0; n < (ParameterDataLength / 9); n++)
             {
@@ -104,7 +104,7 @@ public class StatusMessage
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             if (StatusMessages.Count > 25)
                 throw new InvalidPacketException("A maximum of 25 status messages is allowed.");

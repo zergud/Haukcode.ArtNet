@@ -6,69 +6,33 @@
 /// </summary>
 public class SlotInfo
 {
-    public struct SlotInformation
+    public struct SlotInformation(short offset, SlotTypes type, int slotLink)
     {
-        public SlotInformation(short offset, SlotIds id):this()
+        public SlotInformation(short offset, SlotIds id): this(offset, SlotTypes.Primary, 0)
         {
-            this.Offset = offset;
-            this.Type = SlotTypes.Primary;
-            this.Id = id;
+            Id = id;
         }
 
-        public SlotInformation(short offset, SlotTypes type, int slotLink)
-            : this()
-        {
-            this.Offset = offset;
-            this.Type = type;
-            this.SlotLink = slotLink;
-        }
+        public short Offset { get; set; } = offset;
 
-        public short Offset { get; set; }
-
-        public SlotTypes Type { get; set; }
+        public SlotTypes Type { get; set; } = type;
 
         public SlotIds Id
         {
-            get { return (SlotIds)SlotLink; }
-            set { SlotLink = (int)value; }
+            get => (SlotIds)SlotLink;
+            set => SlotLink = (int)value;
         }
 
-        public int SlotLink { get; set; }     
+        public int SlotLink { get; set; } = slotLink;
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.SlotInfo);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.SlotInfo)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.SlotInfo)
-        {
-        }
+        public List<SlotInformation> Slots { get; set; } = new();
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.SlotInfo)
-        {
-            Slots = new List<SlotInformation>();
-        }
-
-        public List<SlotInformation> Slots { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Slots.Clear();
             for (int n = 0; n < ParameterDataLength / 5; n++)
@@ -76,21 +40,19 @@ public class SlotInfo
                 SlotInformation slot = new SlotInformation();
                 slot.Offset = data.ReadInt16();
                 slot.Type = (SlotTypes) data.ReadByte();
-                slot.SlotLink = (int)data.ReadInt16();
+                slot.SlotLink = data.ReadInt16();
                 Slots.Add(slot);
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             foreach (SlotInformation slot in Slots)
             {
-                data.WriteUInt16(slot.Offset);
+                data.WriteInt16(slot.Offset);
                 data.WriteByte((byte) slot.Type);
-                data.WriteUInt16((short)slot.SlotLink);
+                data.WriteInt16((short)slot.SlotLink);
             }
         }
-
-        #endregion
     }
 }

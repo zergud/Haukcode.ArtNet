@@ -16,12 +16,12 @@ public class RdmNack:RdmPacket
 
     #region Read and Write
 
-    protected override void ReadData(RdmBinaryReader data)
+    protected internal override void ReadData(RdmBinaryReader data)
     {
         Reason = (NackReason) data.ReadInt16();
     }
 
-    protected override void WriteData(RdmBinaryWriter data)
+    protected internal override void WriteData(RdmBinaryWriter data)
     {
         data.WriteByte((byte) Reason);
     }

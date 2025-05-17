@@ -18,91 +18,37 @@ public enum IdentifyModes
 /// </remarks>
 public class IdentifyMode
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.IdentifyMode);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.IdentifyMode)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.IdentifyMode)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.IdentifyMode)
-        {
-        }
-
         public IdentifyModes IdentifyMode { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IdentifyMode = (IdentifyModes) data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte) IdentifyMode);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.IdentifyMode)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.IdentifyMode)
-        {
-        }
-
         public IdentifyModes IdentifyMode { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IdentifyMode = (IdentifyModes) data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte) IdentifyMode);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.IdentifyMode)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.IdentifyMode);
 }

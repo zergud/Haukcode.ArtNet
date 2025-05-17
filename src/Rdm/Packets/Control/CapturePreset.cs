@@ -16,24 +16,13 @@
 /// </remarks>
 public class CapturePreset
 {
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.CapturePreset)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.CapturePreset)
-        {
-        }
-
         public short SceneNumber { get; set; }
-
         public short UpFadeTime { get; set; }
-
         public short DownFadeTime { get; set; }
-
         public short WaitTime { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SceneNumber = data.ReadInt16();
             UpFadeTime = data.ReadInt16();
@@ -41,34 +30,14 @@ public class CapturePreset
             WaitTime = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16(SceneNumber);
-            data.WriteUInt16(UpFadeTime);
-            data.WriteUInt16(DownFadeTime);
-            data.WriteUInt16(WaitTime);
+            data.WriteInt16(SceneNumber);
+            data.WriteInt16(UpFadeTime);
+            data.WriteInt16(DownFadeTime);
+            data.WriteInt16(WaitTime);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.CapturePreset)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.CapturePreset);
 }

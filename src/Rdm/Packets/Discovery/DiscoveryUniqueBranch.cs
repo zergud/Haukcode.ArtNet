@@ -39,13 +39,13 @@ public class DiscoveryUniqueBranch
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             LowerBoundId = data.ReadUId();
             UpperBoundId = data.ReadUId();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUid(LowerBoundId);
             data.WriteUid(UpperBoundId);
@@ -65,11 +65,11 @@ public class DiscoveryUniqueBranch
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 

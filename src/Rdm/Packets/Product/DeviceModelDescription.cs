@@ -14,11 +14,11 @@ public class DeviceModelDescription
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -36,17 +36,14 @@ public class DeviceModelDescription
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Description = data.ReadString(ParameterDataLength);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            if (Description != null)
-            {
-                data.WriteBytes(Encoding.ASCII.GetBytes(Description));
-            }
+            data.WriteString(Description);
         }
 
         #endregion

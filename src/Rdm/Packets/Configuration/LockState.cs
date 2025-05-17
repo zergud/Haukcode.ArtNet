@@ -1,84 +1,38 @@
-﻿namespace Haukcode.ArtNet.Rdm.Packets.DMX;
+﻿namespace Haukcode.ArtNet.Rdm.Packets.Configuration;
 
 public class LockState
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.LockState);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.LockState)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.LockState)
+        public byte CurrentLockState { get; set; }
+        protected internal override void ReadData(RdmBinaryReader data)
         {
+            CurrentLockState = data.ReadByte();
         }
-        
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
+            data.WriteByte(CurrentLockState);
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.LockState)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.LockState)
+        public ushort CurrentPinCode { get; set; }
+        public byte LockState { get; set; }
+
+        protected internal override void ReadData(RdmBinaryReader data)
         {
+            CurrentPinCode = data.ReadUInt16();
+            LockState = data.ReadByte();
         }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
+            data.WriteUInt16(CurrentPinCode);
+            data.WriteByte(LockState);
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
-    {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.LockState)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.LockState)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.LockState);
 }

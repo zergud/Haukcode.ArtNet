@@ -19,12 +19,12 @@ public class EndpointListChange
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             //Parameter Data Empty
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             //Parameter Data Empty
         }
@@ -45,12 +45,12 @@ public class EndpointListChange
             set { listChangeNumber = value; }
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             ListChangeNumber = data.ReadHiLoInt32();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteHiLoInt32(ListChangeNumber);
         }

@@ -15,12 +15,12 @@ public class EndpointList
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             //Parameter Data Empty
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             //Parameter Data Empty
         }
@@ -49,7 +49,7 @@ public class EndpointList
             set { endpointIDs = value; }
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             ListChangeNumber = data.ReadHiLoInt32();
 
@@ -62,7 +62,7 @@ public class EndpointList
             EndpointIDs = endpoints;
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteHiLoInt32(ListChangeNumber);
             foreach (short endpointId in EndpointIDs)

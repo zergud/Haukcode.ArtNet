@@ -1,5 +1,6 @@
 ﻿using System.Threading.Channels;
 using Haukcode.ArtNet.Internal;
+using Haukcode.Network;
 
 namespace Haukcode.ArtNet.Rdm;
 
@@ -76,9 +77,9 @@ public class ArtRdmService: IDisposable
 
         if (e.Packet is ArtRdmPacket rdmPacket)
         {
-            var reader = new RdmBinaryReader(new MemoryStream(rdmPacket.RdmData));
-
-            var rdm = packetFactory.Build(reader);
+            //var reader = new RdmBinaryReader(new MemoryStream(rdmPacket.RdmData));
+            var reader = new BigEndianBinaryReader(rdmPacket.RdmData);   
+            var rdm = packetFactory.Parse(reader);
             
             if (rdm != null)
             {

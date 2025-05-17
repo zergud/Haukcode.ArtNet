@@ -1,84 +1,9 @@
-﻿namespace Haukcode.ArtNet.Rdm.Packets.DMX;
+﻿namespace Haukcode.ArtNet.Rdm.Packets.Control;
 
 public class PowerOnSelfTest
 {
-    public class Get : RdmRequestPacket
-    {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.PowerOnSelfTest)
-        {
-        }
-        
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.PowerOnSelfTest)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class Set : RdmRequestPacket
-    {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.PowerOnSelfTest)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.PowerOnSelfTest)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.PowerOnSelfTest);
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.PowerOnSelfTest);
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.PowerOnSelfTest);
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.PowerOnSelfTest);
 }

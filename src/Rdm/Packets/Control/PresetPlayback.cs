@@ -12,40 +12,13 @@ public class PresetPlayback
         All = 0xffff
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.PresetPlayback);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.PresetPlayback)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.PresetPlayback)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.PresetPlayback)
-        {
-        }
-
         public PlayMode Mode { get; set; }
-
         public ushort SceneNumber { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SceneNumber = (ushort) data.ReadInt16();
             if (SceneNumber > (ushort) PlayMode.Off || SceneNumber < (ushort) PlayMode.All)
@@ -54,33 +27,21 @@ public class PresetPlayback
                 Mode = (PlayMode) SceneNumber;
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             if (Mode == PlayMode.Scene)
-                data.WriteUInt16((short) SceneNumber);
+                data.WriteUInt16(SceneNumber);
             else
-                data.WriteUInt16((short) Mode);
+                data.WriteUInt16((ushort)Mode);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.PresetPlayback)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.PresetPlayback)
-        {
-        }
-
         public PlayMode Mode { get; set; }
-
         public ushort SceneNumber { get; set; }
-
         public byte Level { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SceneNumber = (ushort) data.ReadInt16();
             if (SceneNumber > (ushort)PlayMode.Off || SceneNumber < (ushort)PlayMode.All)
@@ -90,35 +51,14 @@ public class PresetPlayback
             Level = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             if (Mode == PlayMode.Scene)
-                data.WriteUInt16((short)SceneNumber);
+                data.WriteUInt16(SceneNumber);
             else
-                data.WriteUInt16((short)Mode);
+                data.WriteUInt16((ushort)Mode);
             data.WriteByte(Level);
         }
-
-        #endregion
     }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.PresetPlayback)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.PresetPlayback);
 }

@@ -7,51 +7,19 @@
 /// </summary>
 public class ManufacturerLabel
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.ManufacturerLabel);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.ManufacturerLabel)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.ManufacturerLabel)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.ManufacturerLabel)
-        {
-        }
-
         public string? Label { get; set; }
-
-        #region Read and Write
-        
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Label = data.ReadString(ParameterDataLength);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            if (Label != null)
-            {
-                data.WriteBytes(Encoding.ASCII.GetBytes(Label));
-            }
+            data.WriteString(Label);
         }
-
-        #endregion
-
     }
 }

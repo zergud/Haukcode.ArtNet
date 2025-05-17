@@ -1,72 +1,26 @@
-﻿namespace Haukcode.ArtNet.Rdm.IO;
+﻿using Haukcode.Network;
 
-public class RdmBinaryWriter
+namespace Haukcode.ArtNet.Rdm.IO;
+
+public class RdmBinaryWriter(Memory<byte> buffer) : BigEndianBinaryWriter(buffer)
 {
-    private readonly BinaryWriter writer;
-
-    public RdmBinaryWriter(Stream output)
+    public void WriteUid(UId? value)
     {
-        writer = new BinaryWriter(output);
+        ArgumentNullException.ThrowIfNull(value);
+        WriteInt16((short)value.ManufacturerId);
+        WriteInt32((int)value.DeviceId);
     }
 
-    public Stream BaseStream => writer.BaseStream;
-
-    public void WriteUInt16(short value)
+    public void WriteBool(bool value)
     {
-        // Split the short into two bytes
-        byte highByte = (byte)((value >> 8) & 0xFF);
-        byte lowByte = (byte)(value & 0xFF);
-
-        // Write the bytes in big-endian order
-        writer.Write(highByte);
-        writer.Write(lowByte);
-    }
-
-    public void WriteUInt16(ushort value)
-    {
-        WriteUInt16((short)value);
-    }
-
-    public void WriteHiLoInt32(int value)
-    {
-        // Split the int into four bytes
-        byte byte1 = (byte)((value >> 24) & 0xFF); // Most significant byte
-        byte byte2 = (byte)((value >> 16) & 0xFF);
-        byte byte3 = (byte)((value >> 8) & 0xFF);
-        byte byte4 = (byte)(value & 0xFF); // Least significant byte
-
-        // Write the bytes in big-endian order
-        writer.Write(byte1);
-        writer.Write(byte2);
-        writer.Write(byte3);
-        writer.Write(byte4);
-    }
-
-    public void WriteByte(byte value)
-    {
-        writer.Write(value);
+        WriteByte(value ? (byte)255 : (byte)0);
     }
 
     public void WriteString(string? value)
     {
         if (!string.IsNullOrEmpty(value))
-            writer.Write(Encoding.ASCII.GetBytes(value));
-    }
-
-    public void WriteUid(UId? value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-        WriteUInt16((short)value.ManufacturerId);
-        WriteHiLoInt32((int)value.DeviceId);
-    }
-
-    public void WriteBool(bool value)
-    {
-        writer.Write(value);
-    }
-
-    public void WriteBytes(byte[] value)
-    {
-        writer.Write(value);
+        {
+            WriteBytes(Encoding.UTF8.GetBytes(value));
+        }
     }
 }

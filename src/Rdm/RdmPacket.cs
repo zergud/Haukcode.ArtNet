@@ -6,14 +6,11 @@ public abstract class RdmPacket
     {
     }
 
-    public RdmPacket(RdmCommands command, RdmParameters parameterId)
+    protected RdmPacket(RdmCommands command, RdmParameters parameterId)
     {
         Command = command;
         ParameterId = parameterId;
     }
-
-    #region Contents
-
     public byte MessageLength { get; set; }
 
     public UId? DestinationId { get; set; }
@@ -26,7 +23,7 @@ public abstract class RdmPacket
 
     public byte MessageCount { get; set; }
 
-    public short SubDevice { get; set; }
+    public ushort SubDevice { get; set; }
 
     public RdmCommands Command { get; set; }
 
@@ -34,103 +31,14 @@ public abstract class RdmPacket
 
     public byte ParameterDataLength { get; set; }
 
-    public short Checksum { get; set; }
+    public ushort Checksum { get; set; }
 
-    #endregion
-
-    #region Read and Write
-
-    protected internal abstract void ParseData(RdmBinaryReader data);
-
-    protected abstract void WriteData(RdmBinaryWriter data);
-
-
-    public static RdmPacket? ReadPacket(RdmCommands command, RdmParameters parameterId, RdmBinaryReader contentData)
+    protected internal virtual void ReadData(RdmBinaryReader data)
     {
-        RdmPacket? rdmPacket = null;
-
-        RdmHeader header = new RdmHeader
-        {
-            Command = command,
-            ParameterId = parameterId
-        };
-
-        rdmPacket = Create(header);
-        if (rdmPacket != null)
-        {
-            rdmPacket.ReadData(contentData);
-            return rdmPacket;
-        }
-        else
-        {
-            rdmPacket = RdmPacket.Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
-            if (rdmPacket != null)
-            {
-                rdmPacket.ReadData(contentData);
-                return rdmPacket;
-            }
-        }
-
-        throw new UnknownRdmPacketException(header);
     }
 
-    public void Parse(RdmBinaryReader data)
+    protected internal virtual void WriteData(RdmBinaryWriter data)
     {
-        MessageLength = data.ReadByte();
-        DestinationId = data.ReadUId();
-        SourceId = data.ReadUId();
-        TransactionNumber = data.ReadByte();
-        PortOrResponseType = data.ReadByte();
-        MessageCount = data.ReadByte();
-        SubDevice = data.ReadInt16();
-        Command = (RdmCommands)data.ReadByte();
-        ParameterId = (RdmParameters)data.ReadInt16();
-        ParameterDataLength = data.ReadByte();
-
-        ParseData(data);
-    }
-
-    public static RdmRawPacket? ReadPacketRaw(RdmBinaryReader data)
-    {
-        RdmHeader header = new RdmHeader();
-        header.ReadData(data);
-
-        RdmRawPacket? rdmPacket = Create(header, typeof(RdmRawPacket)) as RdmRawPacket;
-        rdmPacket?.ReadData(data);
-
-        return rdmPacket;
-    }
-
-    public void WritePacket(RdmBinaryWriter data)
-    {
-        data.WriteByte(MessageLength);
-        data.WriteUid(DestinationId);
-        data.WriteUid(SourceId);
-        data.WriteByte(TransactionNumber);
-        data.WriteByte(PortOrResponseType);
-        data.WriteByte(MessageCount);
-        data.WriteUInt16(SubDevice);
-        data.WriteByte((byte)Command);
-        data.WriteUInt16((short)ParameterId);
-        data.WriteByte(ParameterDataLength);
-
-        WriteData(data);
-    }
-
-    public static ushort CalculateChecksum(byte[] data)
-    {
-        ushort checksum = 0;
-        foreach (byte item in data)
-            checksum += item;
-        return checksum;
-    }
-
-    public static ushort CalculateChecksum(byte[] data, int startIndex, int endIndex)
-    {
-        ushort checksum = 0;
-        for (int n = startIndex; n < endIndex; n++)
-            checksum += data[n];
-        return checksum;
     }
 
     public bool IsOverflow()
@@ -138,8 +46,39 @@ public abstract class RdmPacket
         return (RdmResponseTypes)PortOrResponseType == RdmResponseTypes.AckOverflow &&
                (Command == RdmCommands.GetResponse || Command == RdmCommands.SetResponse);
     }
-
-    #endregion
-
-
 }
+
+// public void WritePacket(RdmBinaryWriter data)
+// {
+//     data.WriteByte(0xCC);
+//     data.WriteByte(0x01);
+//     data.WriteByte(0x00); // messageLength
+//     data.WriteUid(DestinationId);
+//     data.WriteUid(SourceId);
+//     data.WriteByte(TransactionNumber);
+//     data.WriteByte(PortOrResponseType);
+//     data.WriteByte(MessageCount);
+//     data.WriteUInt16(SubDevice);
+//     data.WriteByte((byte)Command);
+//     data.WriteUInt16((ushort)ParameterId);
+//     data.WriteByte(0x00); // pdl
+//
+//     WriteData(data);
+//     MessageLength = (byte)data.BytesWritten;
+//     ParameterDataLength = (byte)(MessageLength - MinMessageLength);
+//     ushort checksum = 0;
+//     for (int i = 0; i < data.BytesWritten; i++)
+//     {
+//         if (i == 2)
+//         {
+//             data.Memory.Span[i] = MessageLength;
+//         }
+//
+//         if (i == 23)
+//         {
+//             data.Memory.Span[i] = ParameterDataLength;
+//         }
+//         checksum += data.Memory.Span[i];
+//     }
+//     data.WriteUInt16(checksum);    
+// }

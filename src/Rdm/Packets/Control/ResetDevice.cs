@@ -13,47 +13,17 @@ public class ResetDevice
         ColdReset = 0xFF
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.ResetDevice)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.ResetDevice)
-        {
-        }
-
         public ResetType Reset { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Reset = (ResetType)data.ReadByte();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte((byte)Reset);
         }
-
-        #endregion
     }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.ResetDevice)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.ResetDevice);
 }

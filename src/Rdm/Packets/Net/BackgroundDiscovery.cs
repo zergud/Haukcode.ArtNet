@@ -11,12 +11,12 @@ public class BackgroundDiscovery
 
         public short EndpointID { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
         }
@@ -36,13 +36,13 @@ public class BackgroundDiscovery
         /// </summary>
         public bool BackgroundDiscovery { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             BackgroundDiscovery = data.ReadBool();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteBool(BackgroundDiscovery);
@@ -63,13 +63,13 @@ public class BackgroundDiscovery
         /// </summary>
         public bool BackgroundDiscovery { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             BackgroundDiscovery = data.ReadBool();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteBool(BackgroundDiscovery);
@@ -83,12 +83,12 @@ public class BackgroundDiscovery
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             //Parameter Data Empty
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             //Parameter Data Empty
         }

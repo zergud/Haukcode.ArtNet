@@ -1,95 +1,35 @@
 ﻿namespace Haukcode.ArtNet.Rdm.Packets.Configuration;
 
-/// <summary>
-/// This parameter is used to retrieve or change the Tilt Invert setting.
-/// </summary>
 public class TiltInvert
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.TiltInvert);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.TiltInvert)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.TiltInvert)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.TiltInvert)
-        {
-        }
-
         public bool Inverted { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Inverted = data.ReadBool();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(Inverted);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.TiltInvert)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.TiltInvert)
-        {
-        }
-
         public bool Inverted { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             Inverted = data.ReadBool();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(Inverted);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.TiltInvert)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.TiltInvert);
 }

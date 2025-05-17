@@ -11,12 +11,12 @@ public class BackgroundQueuedStatusPolicyDescription
 
         public byte PolicyID { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             PolicyID = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(PolicyID);
         }
@@ -33,13 +33,13 @@ public class BackgroundQueuedStatusPolicyDescription
 
         public string? Description { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             PolicyID = data.ReadByte();
             Description = data.ReadString(ParameterDataLength - 1);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(PolicyID);
             data.WriteString(Description);

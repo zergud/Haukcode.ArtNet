@@ -11,12 +11,12 @@ public class EndpointTiming
 
         public short EndpointID { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
         }
@@ -35,14 +35,14 @@ public class EndpointTiming
 
         public byte SettingsCount { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             CurrentSetting = data.ReadByte();
             SettingsCount = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteByte(CurrentSetting);
@@ -61,13 +61,13 @@ public class EndpointTiming
 
         public byte PortTiming { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             EndpointID = data.ReadInt16();
             PortTiming = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
             data.WriteByte(PortTiming);
@@ -81,11 +81,11 @@ public class EndpointTiming
         {
         }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
     }

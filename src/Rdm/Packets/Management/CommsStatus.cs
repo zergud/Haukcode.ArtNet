@@ -11,40 +11,17 @@ public class CommsStatus
     /// <summary>
     /// Requests information about the amount of errors encountered by a device.
     /// </summary>
-    public class Get : RdmRequestPacket
-    {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.CommsStatus)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.CommsStatus);
 
     /// <summary>
     /// Contains information aabout the amount of errors encountered by a device.
     /// </summary>
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.CommsStatus)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.CommsStatus)
-        {
-        }
-
         /// <summary>
         /// The message ended before the Message Length field was received.
         /// </summary>
-        public short ShortMessage { get; set; }
+        public ushort ShortMessage { get; set; }
 
         /// <summary>
         /// The number of slots actually received did not match the Message Length plus
@@ -54,7 +31,7 @@ public class CommsStatus
         /// This counter shall only be incremented if the Destination UID in the
         /// packet matches the Device’s UID.
         /// </remarks>
-        public short LengthMismatch { get; set; }
+        public ushort LengthMismatch { get; set; }
 
         /// <summary>
         /// The message checksum failed.
@@ -62,71 +39,29 @@ public class CommsStatus
         /// <remarks>
         /// This counter shall only be incremented if the Destination UID in the packet matches the Device’s UID.
         /// </remarks>
-        public short ChecksumFail { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        public ushort ChecksumFail { get; set; }
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            ShortMessage = data.ReadInt16();
-            LengthMismatch = data.ReadInt16();
-            ChecksumFail = data.ReadInt16();
+            ShortMessage = data.ReadUInt16();
+            LengthMismatch = data.ReadUInt16();
+            ChecksumFail = data.ReadUInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(ShortMessage);
             data.WriteUInt16(LengthMismatch);
             data.WriteUInt16(ChecksumFail);
         }
-
-        #endregion
     }
 
     /// <summary>
     /// Clears all the error counts to zero.
     /// </summary>
-    public class Set : RdmRequestPacket
-    {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.CommsStatus)
-        {
-        }
-
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.CommsStatus);
 
     /// <summary>
     /// Confirmation that the error counts have been cleared to zero.
     /// </summary>
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.CommsStatus)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.CommsStatus);
 }

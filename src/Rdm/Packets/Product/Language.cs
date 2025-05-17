@@ -20,11 +20,11 @@ public class Language
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -42,13 +42,13 @@ public class Language
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             string? lang = data.ReadString(ParameterDataLength);
             Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteString(Language.TwoLetterISOLanguageName);
         }
@@ -67,13 +67,13 @@ public class Language
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             string? lang = data.ReadString(ParameterDataLength);
             Language = lang != null ? new CultureInfo(lang) : CultureInfo.InvariantCulture;
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteString(Language?.TwoLetterISOLanguageName ?? "en");
         }
@@ -90,11 +90,11 @@ public class Language
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 

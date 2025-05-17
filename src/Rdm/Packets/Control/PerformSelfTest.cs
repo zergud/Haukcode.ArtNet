@@ -8,91 +8,35 @@ public class PerformSelfTest
         All = 0xFF
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.PerformSelfTest);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.PerformSelfTest)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.PerformSelfTest)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.PerformSelfTest)
-        {
-        }
-
         public bool IsTestActive { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IsTestActive = data.ReadBool();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(IsTestActive);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.PerformSelfTest);
+
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.PerformSelfTest)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.PerformSelfTest)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.PerformSelfTest)
-        {
-        }
-
         public byte TestNumber { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             TestNumber = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(TestNumber);
         }
-
-        #endregion
     }
 }

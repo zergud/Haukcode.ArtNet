@@ -29,15 +29,17 @@ public class ArtNetRdmClient : ArtNetClient
             packet.SubDevice = subDevice.SubDeviceId;
 
         //Create Rdm Packet
-        using (var rdmData = new MemoryStream())
-        {
+       // using (var rdmData = new MemoryStream())
+       // {
+       byte[] rdmData = new byte[packet.MessageLength];
+            
             var rdmWriter = new RdmBinaryWriter(rdmData);
 
             //Write the RDM packet
             packet.WritePacket(rdmWriter);
 
             //Write the checksum
-            rdmWriter.WriteUInt16((short)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +
+            rdmWriter.WriteUInt16((ushort)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +
                                           (int)RdmVersions.SubMessage + (int)DmxStartCodes.RDM));
 
             //Create sACN Packet
@@ -50,6 +52,6 @@ public class ArtNetRdmClient : ArtNetClient
             };
 
             return QueuePacketForSending(targetAddress, rdmPacket);
-        }
+       // }
     }
 }

@@ -6,55 +6,35 @@
 /// </summary>
 public class SelfTestDescription
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.SelfTestDescription)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.SelfTestDescription)
-        {
-        }
-
         public byte TestNumber { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             TestNumber = data.ReadByte();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(TestNumber);
         }
-
-        #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.SelfTestDescription)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.SelfTestDescription)
-        {
-        }
-
         public byte TestNumber { get; set; }
-
         public string? Description { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             TestNumber = data.ReadByte();
             Description = data.ReadString(ParameterDataLength - 1);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(TestNumber);
-            data.WriteString(Description);
+            data.WriteString(Description ?? string.Empty, ParameterDataLength - 1);
         }
 
-        #endregion
     }
 }

@@ -5,35 +5,10 @@
 /// </summary>
 public class DiscoveryUnMute
 {
-    public class Request : RdmRequestPacket
+    public class Request() : RdmRequestPacket(RdmCommands.Discovery, RdmParameters.DiscoveryUnMute);
+
+    public class Reply() : RdmResponsePacket(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUniqueBranch)
     {
-        public Request()
-            : base(RdmCommands.Discovery, RdmParameters.DiscoveryUnMute)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-            //No Packet Data
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-            //No Packet Data
-        }
-
-        #endregion
-    }
-
-    public class Reply : RdmResponsePacket
-    {
-        public Reply()
-            : base(RdmCommands.DiscoveryResponse, RdmParameters.DiscoveryUniqueBranch)
-        {
-        }
-
         /// <summary>
         /// Some control flags relating to the function of the device.
         /// </summary>
@@ -54,7 +29,7 @@ public class DiscoveryUnMute
         /// Reserved bits (Bits 4-15)
         /// The Reserved bits (Bits 4-15) are reserved for future implementation and shall be set to 0.
         /// </remarks>
-        public short ControlField { get; set; }
+        public ushort ControlField { get; set; }
 
         /// <summary>
         /// The id for the primary port on the device.
@@ -69,14 +44,14 @@ public class DiscoveryUnMute
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            ControlField = data.ReadInt16();
+            ControlField = data.ReadUInt16();
             if (ParameterDataLength > 2)
                 BindingId = data.ReadUId();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(ControlField);
             data.WriteUid(BindingId);

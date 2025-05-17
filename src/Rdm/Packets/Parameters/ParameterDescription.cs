@@ -7,33 +7,23 @@
 /// </summary>
 public class ParameterDescription
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.ParameterDescription)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.ParameterDescription)
-        {
-        }
-
         public RdmParameters ParameterId { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            ParameterId = (RdmParameters)((ushort)data.ReadInt16());
+            ParameterId = (RdmParameters)(ushort)data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16((short)ParameterId);
+            data.WriteUInt16((ushort)ParameterId);
         }
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.ParameterDescription)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.ParameterDescription)
-        {
-        }
-
         /// <summary>
         /// The manufacturer specific PID requested by the controller. Range 0x8000 to 0xFFDF.
         /// </summary>
@@ -110,7 +100,7 @@ public class ParameterDescription
         /// </summary>
         public string? Description { get; set; }
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             ParameterId = (RdmParameters)((ushort)data.ReadInt16());
             PDLSize = data.ReadByte();
@@ -119,13 +109,13 @@ public class ParameterDescription
             Type = data.ReadByte();
             Unit = data.ReadByte();
             Prefix = data.ReadByte();
-            MinValidValue = data.ReadHiLoInt32();
-            MaxValidValue = data.ReadHiLoInt32();
-            DefaultValue = data.ReadHiLoInt32();
+            MinValidValue = data.ReadInt32();
+            MaxValidValue = data.ReadInt32();
+            DefaultValue = data.ReadInt32();
             Description = data.ReadString(ParameterDataLength - 20);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16((ushort)ParameterId);
             data.WriteByte(PDLSize);
@@ -134,11 +124,10 @@ public class ParameterDescription
             data.WriteByte(Type);
             data.WriteByte(Unit);
             data.WriteByte(Prefix);
-            data.WriteHiLoInt32(MinValidValue);
-            data.WriteHiLoInt32(MaxValidValue);
-            data.WriteHiLoInt32(DefaultValue);
-            data.WriteBytes(Encoding.ASCII.GetBytes(Description));
-            ;
+            data.WriteInt32(MinValidValue);
+            data.WriteInt32(MaxValidValue);
+            data.WriteInt32(DefaultValue);
+            data.WriteString(Description);
         }
     }
 }

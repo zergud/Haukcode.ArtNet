@@ -9,91 +9,33 @@
 /// </remarks>
 public class IdentifyDevice
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.IdentifyDevice);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.IdentifyDevice)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.IdentifyDevice)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.IdentifyDevice)
-        {
-        }
-
         public bool IdentifyEnabled { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IdentifyEnabled = data.ReadBool();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(IdentifyEnabled);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.IdentifyDevice)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.IdentifyDevice)
-        {
-        }
-
         public bool IdentifyEnabled { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             IdentifyEnabled = data.ReadBool();
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteBool(IdentifyEnabled);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.IdentifyDevice)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.IdentifyDevice);
 }

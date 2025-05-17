@@ -14,33 +14,32 @@
 /// </remarks>
 public class DmxStartAddress
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.DmxStartAddress);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.DmxStartAddress)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.DmxStartAddress)
-        {
-        }
+        /// <summary>
+        /// The DMX512 start address for the fixture.
+        /// </summary>
+        /// <remarks>
+        /// This should be in the range of 1 to 512. A value
+        /// of zero indicates the parameter is not set.
+        /// </remarks>
+        public ushort DmxAddress { get; set; }
         
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
+            DmxAddress = data.ReadUInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
+            data.WriteUInt16(DmxAddress);
         }
-
-        #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.DmxStartAddress)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.DmxStartAddress)
-        {
-        }
-
         /// <summary>
         /// The DMX512 start address for the fixture.
         /// </summary>
@@ -48,71 +47,18 @@ public class DmxStartAddress
         /// This should be in the range of 1 to 512. A value
         /// of zero indicates the parameter is not set.
         /// </remarks>
-        public short DmxAddress { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        public ushort DmxAddress { get; set; }
+        
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            DmxAddress = data.ReadInt16();
+            DmxAddress = data.ReadUInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(DmxAddress);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
-    {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.DmxStartAddress)
-        {
-        }
-
-        /// <summary>
-        /// The DMX512 start address for the fixture.
-        /// </summary>
-        /// <remarks>
-        /// This should be in the range of 1 to 512. A value
-        /// of zero indicates the parameter is not set.
-        /// </remarks>
-        public short DmxAddress { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-            DmxAddress = data.ReadInt16();
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-            data.WriteUInt16(DmxAddress);
-        }
-
-        #endregion
-    }
-
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.DmxStartAddress)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.DmxStartAddress);
 }

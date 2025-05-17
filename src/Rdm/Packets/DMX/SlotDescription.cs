@@ -10,55 +10,35 @@
 /// </remarks>
 public class SlotDescription
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.SlotDescription)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.SlotDescription)
-        {
-        }
-
         public short SlotOffset { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SlotOffset = data.ReadInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16(SlotOffset);
+            data.WriteInt16(SlotOffset);
         }
-
-        #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.SlotDescription)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.SlotDescription)
-        {
-        }
-
         public short SlotOffset { get; set; }
-
         public string? Description { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             SlotOffset = data.ReadInt16();
             Description = data.ReadString(ParameterDataLength - 2);
         }
-
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16(SlotOffset);
+            data.WriteInt16(SlotOffset);
             data.WriteString(Description);
         }
-
-        #endregion
     }
 }

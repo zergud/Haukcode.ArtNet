@@ -12,25 +12,7 @@
 /// </remarks>
 public class DmxBlockAddress
 {
-    public class Get : RdmRequestPacket
-    {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.DmxBlockAddress)
-        {
-        }
-        
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.DmxBlockAddress);
 
     public class GetReply : RdmResponsePacket
     {
@@ -46,7 +28,7 @@ public class DmxBlockAddress
         /// <remarks>
         /// The footprint of the root device shall not be included within this footprint field. 
         /// </remarks>
-        public short TotalDeviceFootprint { get; set; }
+        public ushort TotalDeviceFootprint { get; set; }
 
         /// <summary>
         /// The first DMX address of all sub-devices.
@@ -57,32 +39,23 @@ public class DmxBlockAddress
         /// addressed as a contiguous block. If the sub-devices are not currently linearly addressed as a contiguous 
         /// block then this field shall be set to 0xFFFF in the response message. 
         /// </remarks>
-        public short DmxAddress { get; set; }
+        public ushort DmxAddress { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            TotalDeviceFootprint = data.ReadInt16();
-            DmxAddress = data.ReadInt16();
+            TotalDeviceFootprint = data.ReadUInt16();
+            DmxAddress = data.ReadUInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(TotalDeviceFootprint);
             data.WriteUInt16(DmxAddress);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.DmxBlockAddress)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.DmxBlockAddress)
-        {
-        }
-
         /// <summary>
         /// The first DMX address of all sub-devices.
         /// </summary>
@@ -91,40 +64,18 @@ public class DmxBlockAddress
         /// the device shall automatically address each sub-device incrementally accounting for the footprint size of 
         /// each sub-device. 
         /// </remarks>
-        public short DmxAddress { get; set; }
+        public ushort DmxAddress { get; set; }
 
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
-            DmxAddress = data.ReadInt16();
+            DmxAddress = data.ReadUInt16();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(DmxAddress);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.DmxBlockAddress)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.DmxBlockAddress);
 }

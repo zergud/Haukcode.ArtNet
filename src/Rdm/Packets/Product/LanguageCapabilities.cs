@@ -20,11 +20,11 @@ public class LanguageCapabilities
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
         }
 
@@ -43,7 +43,7 @@ public class LanguageCapabilities
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             for (int n = 0; n < ParameterDataLength / 2; n++)
             {
@@ -52,7 +52,7 @@ public class LanguageCapabilities
             }
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             foreach(CultureInfo language in Languages)
                 data.WriteString(language.TwoLetterISOLanguageName);

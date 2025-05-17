@@ -12,20 +12,15 @@ public class RdmAckTimer : RdmPacket
         PortOrResponseType = (byte)RdmResponseTypes.AckTimer;
     }
 
-    public short EstimatedResponseTime { get; set; }
+    public ushort EstimatedResponseTime { get; set; }
 
-    #region Read and Write
-
-    protected override void ReadData(RdmBinaryReader data)
+    protected internal override void ReadData(RdmBinaryReader data)
     {
-        EstimatedResponseTime = data.ReadInt16();
+        EstimatedResponseTime = data.ReadUInt16();
     }
 
-    protected override void WriteData(RdmBinaryWriter data)
+    protected internal override void WriteData(RdmBinaryWriter data)
     {
         data.WriteUInt16(EstimatedResponseTime);
     }
-
-    #endregion
-
 }

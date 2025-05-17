@@ -12,6 +12,7 @@ namespace Haukcode.ArtNet.Rdm;
 
 public class RdmPacketFactory
 {
+    private const byte MinMessageLength = 24;
     public RdmPacketFactory()
     {
         RegisterDiscoveryMessages();
@@ -478,7 +479,7 @@ public class RdmPacketFactory
         //        $"The packet {parameter.ToString()} is already registered for {command.ToString()}.");
     }
     
-    public RdmPacket? Build(RdmBinaryReader data)
+    public RdmPacket? Parse(RdmBinaryReader data)
     {
         var messageLength = data.ReadByte();
         var destinationId = data.ReadUId();
@@ -486,7 +487,7 @@ public class RdmPacketFactory
         var transactionNumber = data.ReadByte();
         var portOrResponseType = data.ReadByte();
         var messageCount = data.ReadByte();
-        var subDevice = data.ReadInt16();
+        var subDevice = data.ReadUInt16();
         var command = (RdmCommands)data.ReadByte();
         var parameterId = (RdmParameters)data.ReadInt16();
         var parameterDataLength = data.ReadByte();
@@ -518,12 +519,46 @@ public class RdmPacketFactory
         packet.ParameterId = parameterId;
         packet.ParameterDataLength = parameterDataLength;
         
-        packet.ParseData(data);
+        packet.ReadData(data);
         
         return  packet;
     }
     
-    
+    public void WritePacket(RdmBinaryWriter data, RdmPacket packet)
+    {
+        data.WriteByte(0xCC);
+        data.WriteByte(0x01);
+        data.WriteByte(0x00); // messageLength
+        data.WriteUid(packet.DestinationId);
+        data.WriteUid(packet.SourceId);
+        data.WriteByte(packet.TransactionNumber);
+        data.WriteByte(packet.PortOrResponseType);
+        data.WriteByte(packet.MessageCount);
+        data.WriteUInt16(packet.SubDevice);
+        data.WriteByte((byte)packet.Command);
+        data.WriteUInt16((ushort)packet.ParameterId);
+        data.WriteByte(0x00); // pdl
+
+        packet.WriteData(data);
+        packet.MessageLength = (byte)data.BytesWritten;
+        packet.ParameterDataLength = (byte)(packet.MessageLength - MinMessageLength);
+        ushort checksum = 0;
+        for (int i = 0; i < data.BytesWritten; i++)
+        {
+            if (i == 2)
+            {
+                data.Memory.Span[i] = packet.MessageLength;
+            }
+
+            if (i == 23)
+            {
+                data.Memory.Span[i] = packet.ParameterDataLength;
+            }
+            checksum += data.Memory.Span[i];
+        }
+        packet.Checksum = checksum;
+        data.WriteUInt16(checksum);    
+    }
 
     public static bool IsErrorResponse(PacketKey packetKey)
     {

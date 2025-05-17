@@ -2,43 +2,11 @@
 
 public class LockStateDescription
 {
-    public class Get : RdmRequestPacket
-    {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.LockStateDescription)
-        {
-        }
-        
-        #region Read and Write
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.LockStateDescription);
 
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.LockStateDescription);
 
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.LockStateDescription);
 
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.LockStateDescription)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.LockStateDescription);
 }

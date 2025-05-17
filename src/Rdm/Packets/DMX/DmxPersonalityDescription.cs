@@ -13,12 +13,12 @@ public class DmxPersonalityDescription
 
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             PersonalityIndex = data.ReadByte();
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(PersonalityIndex);
         }
@@ -35,21 +35,21 @@ public class DmxPersonalityDescription
 
         public byte PersonalityIndex { get; set; }
 
-        public short DmxSlotsRequired { get; set; }
+        public ushort DmxSlotsRequired { get; set; }
 
         public string? Description { get; set; }
         
         #region Read and Write
 
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             PersonalityIndex = data.ReadByte();
-            DmxSlotsRequired = data.ReadInt16();
+            DmxSlotsRequired = data.ReadUInt16();
             if(ParameterDataLength > 3)
                 Description = data.ReadString(ParameterDataLength - 3);
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteByte(PersonalityIndex);
             data.WriteUInt16(DmxSlotsRequired);

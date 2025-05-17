@@ -5,115 +5,57 @@
 /// </summary>
 public class RealTimeClock
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.RealTimeClock);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.RealTimeClock)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.RealTimeClock)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.RealTimeClock)
-        {
-        }
-
         public DateTime ClockTime { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             ClockTime = new DateTime(
-                data.ReadInt16(),   //Year    
-                data.ReadByte(),        //Month
-                data.ReadByte(),        //Day
-                data.ReadByte(),        //Hour
-                data.ReadByte(),        //Minute
-                data.ReadByte());       //Second
-
+                data.ReadInt16(), //Year    
+                data.ReadByte(), //Month
+                data.ReadByte(), //Day
+                data.ReadByte(), //Hour
+                data.ReadByte(), //Minute
+                data.ReadByte()); //Second
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16((short)ClockTime.Year);
+            data.WriteUInt16((ushort)ClockTime.Year);
             data.WriteByte((byte)ClockTime.Month);
             data.WriteByte((byte)ClockTime.Day);
             data.WriteByte((byte)ClockTime.Hour);
             data.WriteByte((byte)ClockTime.Minute);
             data.WriteByte((byte)ClockTime.Second);
         }
-
-        #endregion
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.RealTimeClock)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.RealTimeClock)
-        {
-        }
-
         public DateTime ClockTime { get; set; }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
+        protected internal override void ReadData(RdmBinaryReader data)
         {
             ClockTime = new DateTime(
-                data.ReadInt16(),   //Year    
-                data.ReadByte(),        //Month
-                data.ReadByte(),        //Day
-                data.ReadByte(),        //Hour
-                data.ReadByte(),        //Minute
-                data.ReadByte());       //Second
-
+                data.ReadInt16(), //Year    
+                data.ReadByte(), //Month
+                data.ReadByte(), //Day
+                data.ReadByte(), //Hour
+                data.ReadByte(), //Minute
+                data.ReadByte()); //Second
         }
 
-        protected override void WriteData(RdmBinaryWriter data)
+        protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16((short)ClockTime.Year);
+            data.WriteUInt16((ushort)ClockTime.Year);
             data.WriteByte((byte)ClockTime.Month);
             data.WriteByte((byte)ClockTime.Day);
             data.WriteByte((byte)ClockTime.Hour);
             data.WriteByte((byte)ClockTime.Minute);
             data.WriteByte((byte)ClockTime.Second);
         }
-
-        #endregion
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.RealTimeClock)
-        {
-        }
-
-        #region Read and Write
-
-        protected override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.RealTimeClock);
 }
