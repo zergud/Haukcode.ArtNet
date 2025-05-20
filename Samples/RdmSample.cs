@@ -15,20 +15,30 @@ namespace Haukcode.ArtNet.Samples;
 /// <summary>
 /// Discovery all rdm devices and request DeviceLabels
 /// </summary>
-public class RdmSample : SampleRdmBase
+public class RdmSample
 {
-    
+    private readonly ArtRdmService _service;
     private readonly List<(UId uid, short universe, IPEndPoint ip)> devices = new();
     private int deviceCount;
 
     public RdmSample(IPAddress localIp, IPAddress localSubnetMask)
-        : base(localIp, localSubnetMask)
     {
+        _service = new ArtRdmService(localIp, localSubnetMask);
+        _service.OnArtNetPacketReceived += OnArtNetPacketReceived;
+        _service.OnRdmPacketReceived += OnRdmPacketReceived;
     }
 
-    protected override void Socket_NewPacket(double timestampMS, ReceiveDataPacket e)
+    private void OnRdmPacketReceived(object? sender, RdmEventArgs e)
     {
-        //base.Socket_NewPacket(timestampMS, e);
+        if (e.Packet is DeviceLabel.GetReply deviceLabel)
+        {
+            Console.WriteLine($"{deviceCount--} Response from device: {deviceLabel.SourceId} Label='{deviceLabel.Label}'");
+                        
+        }
+    }
+
+    private void OnArtNetPacketReceived(object? sender, ArtNetEventArgs e)
+    {
         switch (e.Packet.OpCode)
         {
             case ArtNetOpCodes.PollReply:
@@ -43,24 +53,14 @@ public class RdmSample : SampleRdmBase
                     ProcessTodData(todData, e.Source);
                 }
                 break;
-            case ArtNetOpCodes.Rdm:
-                if (e.Packet is ArtRdmPacket rdmPacket)
-                {
-                    var reader = new RdmBinaryReader(new MemoryStream(rdmPacket.RdmData));
-                    RdmPacket rdm = RdmPacket.Parse(reader);
-                    if (rdm is DeviceLabel.GetReply deviceLabel)
-                    {
-                        Console.WriteLine($"{deviceCount--} Response from device: {deviceLabel.Header.SourceId} Label='{deviceLabel.Label}'");
-                        
-                    }
-                }
-                break;
         }
     }
 
-    public async void SendArtPoll()
+   
+
+    public async Task SendArtPoll()
     {
-        await this.client.QueuePacketForSending((IPAddress)null, new ArtPollPacket());
+        await _service.client.QueuePacketForSending((IPAddress)null, new ArtPollPacket {TalkToMe = 2});
     }
 
 
@@ -90,7 +90,7 @@ public class RdmSample : SampleRdmBase
                     tod.RequestedUniverses.Add((byte)((packet.SubSwitch << 4) + swOut));
                 }
             }
-            await this.client.QueuePacketForSending(source, tod);
+            await _service.client.QueuePacketForSending(source, tod);
             await Task.Delay(10);
         }
         catch (Exception e)
@@ -119,7 +119,7 @@ public class RdmSample : SampleRdmBase
             foreach (var dev in devices)
             {
                 RdmPacket packet = new DeviceLabel.Get();
-                await this.client.SendRdm(packet, dev.ip, dev.universe, dev.uid);
+                await _service.SendRdm(packet, dev.ip, dev.universe, dev.uid, UId.Empty);
                 await Task.Delay(10);
             }
         }

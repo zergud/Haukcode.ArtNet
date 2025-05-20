@@ -125,13 +125,8 @@ public class SensorDefinition
         #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.SensorDefinition)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.SensorDefinition)
-        {
-        }
-
         public byte SensorNumber { get; set; }
 
         public SensorTypes Type { get; set; }
@@ -174,10 +169,10 @@ public class SensorDefinition
             data.WriteByte((byte) Type);
             data.WriteByte((byte) Unit);
             data.WriteByte((byte) Prefix);
-            data.WriteUInt16(RangeMinValue);
-            data.WriteUInt16(RangeMaxValue);
-            data.WriteUInt16(NormalMinValue);
-            data.WriteUInt16(NormalMaxValue);
+            data.WriteInt16(RangeMinValue);
+            data.WriteInt16(RangeMaxValue);
+            data.WriteInt16(NormalMinValue);
+            data.WriteInt16(NormalMaxValue);
             data.WriteByte(RecordValueSupport);
             data.WriteString(Description);
         }

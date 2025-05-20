@@ -6,33 +6,10 @@
 /// </summary>
 public class DeviceInfo
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.DeviceInfo);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.DeviceInfo)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.DeviceInfo)
-        {
-        }
-
-        #region Read and Write
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.DeviceInfo)
-        {
-        }
-
         public short RdmProtocolVersion { get; set; }
 
         public short DeviceModelId { get; set; }
@@ -41,15 +18,15 @@ public class DeviceInfo
 
         public int SoftwareVersionId { get; set; }
 
-        public short DmxFootprint { get; set; }
+        public ushort DmxFootprint { get; set; }
 
         public byte DmxPersonality { get; set; }
 
         public byte DmxPersonalityCount { get; set; }
 
-        public short DmxStartAddress { get; set; }
+        public ushort DmxStartAddress { get; set; }
 
-        public short SubDeviceCount { get; set; }
+        public ushort SubDeviceCount { get; set; }
 
         public byte SensorCount { get; set; }
 
@@ -60,21 +37,21 @@ public class DeviceInfo
             RdmProtocolVersion = data.ReadInt16();
             DeviceModelId = data.ReadInt16();
             ProductCategory = (ProductCategories) data.ReadInt16();
-            SoftwareVersionId = data.ReadHiLoInt32();
-            DmxFootprint = data.ReadInt16();
+            SoftwareVersionId = data.ReadInt32();
+            DmxFootprint = data.ReadUInt16();
             DmxPersonality = data.ReadByte();
             DmxPersonalityCount = data.ReadByte();
-            DmxStartAddress = data.ReadInt16();
-            SubDeviceCount = data.ReadInt16();
+            DmxStartAddress = data.ReadUInt16();
+            SubDeviceCount = data.ReadUInt16();
             SensorCount = data.ReadByte();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteUInt16(RdmProtocolVersion);
-            data.WriteUInt16(DeviceModelId);
-            data.WriteUInt16((short) ProductCategory);
-            data.WriteHiLoInt32(SoftwareVersionId);
+            data.WriteInt16(RdmProtocolVersion);
+            data.WriteInt16(DeviceModelId);
+            data.WriteInt16((short) ProductCategory);
+            data.WriteInt32(SoftwareVersionId);
             data.WriteUInt16(DmxFootprint);
             data.WriteByte(DmxPersonality);
             data.WriteByte(DmxPersonalityCount);

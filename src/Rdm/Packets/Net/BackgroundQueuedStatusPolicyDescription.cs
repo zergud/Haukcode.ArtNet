@@ -2,13 +2,8 @@
 
 public class BackgroundQueuedStatusPolicyDescription
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.BackgroundQueuedStatusPolicyDescription)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.BackgroundQueuedStatusPolicyDescription)
-        {
-        }
-
         public byte PolicyID { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)

@@ -35,12 +35,12 @@ public class DevicePowerCycles
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            PowerCycles = data.ReadHiLoInt32();
+            PowerCycles = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(PowerCycles);
+            data.WriteInt32(PowerCycles);
         }
 
         #endregion
@@ -59,12 +59,12 @@ public class DevicePowerCycles
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            PowerCycles = data.ReadHiLoInt32();
+            PowerCycles = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(PowerCycles);
+            data.WriteInt32(PowerCycles);
         }
 
         #endregion

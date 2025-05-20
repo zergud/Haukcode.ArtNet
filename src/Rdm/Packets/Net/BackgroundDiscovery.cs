@@ -2,18 +2,13 @@
 
 public class BackgroundDiscovery
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.BackgroundDiscovery)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.BackgroundDiscovery)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
@@ -22,14 +17,9 @@ public class BackgroundDiscovery
         }
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.BackgroundDiscovery)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.BackgroundDiscovery)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         /// <summary>
         /// Controls whether background discovery is enabled within the RDM device.
@@ -38,7 +28,7 @@ public class BackgroundDiscovery
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
             BackgroundDiscovery = data.ReadBool();
         }
 
@@ -49,14 +39,9 @@ public class BackgroundDiscovery
         }
     }
 
-    public class Set : RdmRequestPacket
+    public class Set() : RdmRequestPacket(RdmCommands.Set, RdmParameters.BackgroundDiscovery)
     {
-        public Set()
-            : base(RdmCommands.Set, RdmParameters.BackgroundDiscovery)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         /// <summary>
         /// Controls whether background discovery is enabled within the RDM device.
@@ -65,7 +50,7 @@ public class BackgroundDiscovery
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
             BackgroundDiscovery = data.ReadBool();
         }
 
@@ -76,21 +61,5 @@ public class BackgroundDiscovery
         }
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.BackgroundDiscovery)
-        {
-        }
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-            //Parameter Data Empty
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-            //Parameter Data Empty
-        }
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.BackgroundDiscovery);
 }

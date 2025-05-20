@@ -8,55 +8,22 @@
 /// </remarks>
 public class EndpointList
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.EndpointList);
+
+    public class Reply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.EndpointList)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.EndpointList)
-        {
-        }
+        public int ListChangeNumber { get; set; }
+
+        public List<ushort> EndpointIDs { get; set; } = new List<ushort>();
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            //Parameter Data Empty
-        }
+            ListChangeNumber = data.ReadInt32();
 
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-            //Parameter Data Empty
-        }
-    }
-
-    public class Reply : RdmResponsePacket
-    {
-        public Reply()
-            : base(RdmCommands.GetResponse, RdmParameters.EndpointList)
-        {
-        }
-
-        private int listChangeNumber = 0;
-
-        public int ListChangeNumber
-        {
-            get { return listChangeNumber; }
-            set { listChangeNumber = value; }
-        }
-
-        List<short> endpointIDs = new List<short>();
-
-        public List<short> EndpointIDs
-        {
-            get { return endpointIDs; }
-            set { endpointIDs = value; }
-        }
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-            ListChangeNumber = data.ReadHiLoInt32();
-
-            List<short> endpoints = new List<short>();
+            List<ushort> endpoints = new List<ushort>();
             for (int n = 0; n < ((ParameterDataLength - 4) / 2); n++)
             {
-                endpoints.Add(data.ReadInt16());
+                endpoints.Add(data.ReadUInt16());
             }
 
             EndpointIDs = endpoints;
@@ -64,8 +31,8 @@ public class EndpointList
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(ListChangeNumber);
-            foreach (short endpointId in EndpointIDs)
+            data.WriteInt32(ListChangeNumber);
+            foreach (ushort endpointId in EndpointIDs)
             {
                 data.WriteUInt16(endpointId);
             }

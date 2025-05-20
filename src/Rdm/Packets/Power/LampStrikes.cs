@@ -39,12 +39,12 @@ public class LampStrikes
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            LampStrikes = data.ReadHiLoInt32();
+            LampStrikes = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(LampStrikes);
+            data.WriteInt32(LampStrikes);
         }
 
         #endregion
@@ -63,12 +63,12 @@ public class LampStrikes
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            LampStrikes = data.ReadHiLoInt32();
+            LampStrikes = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(LampStrikes);
+            data.WriteInt32(LampStrikes);
         }
 
         #endregion

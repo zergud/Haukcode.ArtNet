@@ -2,18 +2,13 @@
 
 public class EndpointDevices
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.EndpointDevices)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.EndpointDevices)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
@@ -22,14 +17,9 @@ public class EndpointDevices
         }
     }
 
-    public class Reply : RdmResponsePacket
+    public class Reply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.EndpointDevices)
     {
-        public Reply()
-            : base(RdmCommands.GetResponse, RdmParameters.EndpointDevices)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         public int ListChangeNumber { get; set; }
 
@@ -44,8 +34,8 @@ public class EndpointDevices
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
-            ListChangeNumber = data.ReadHiLoInt32();
+            EndpointID = data.ReadUInt16();
+            ListChangeNumber = data.ReadInt32();
 
             for (int n = 0; n < (ParameterDataLength - 6) / 6; n++)
             {
@@ -56,7 +46,7 @@ public class EndpointDevices
         protected internal override void WriteData(RdmBinaryWriter data)
         {
             data.WriteUInt16(EndpointID);
-            data.WriteHiLoInt32(ListChangeNumber);
+            data.WriteInt32(ListChangeNumber);
 
             foreach (UId? id in DeviceIds)
                 data.WriteUid(id);

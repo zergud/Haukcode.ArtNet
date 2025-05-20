@@ -2,42 +2,21 @@
 
 public class TcpCommsStatus
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.TcpCommsStatus);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.TcpCommsStatus)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.TcpCommsStatus)
-        {
-        }
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-            //Parameter Data Empty
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-            //Parameter Data Empty
-        }
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.TcpCommsStatus)
-        {
-        }
-
         public IPAddress CurrentConnectionIP { get; set; }
 
-        public short UnhealthyTCPEvents { get; set; }
+        public ushort UnhealthyTCPEvents { get; set; }
 
-        public short TCPConnectEvents { get; set; }
+        public ushort TCPConnectEvents { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
             CurrentConnectionIP = new IPAddress(data.ReadBytes(4));
-            UnhealthyTCPEvents = data.ReadInt16();
-            TCPConnectEvents = data.ReadInt16();
+            UnhealthyTCPEvents = data.ReadUInt16();
+            TCPConnectEvents = data.ReadUInt16();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
@@ -66,21 +45,5 @@ public class TcpCommsStatus
         }
     }
 
-    public class SetReply : RdmResponsePacket
-    {
-        public SetReply()
-            : base(RdmCommands.SetResponse, RdmParameters.EndpointLabel)
-        {
-        }
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-            //Parameter Data Empty
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-            //Parameter Data Empty
-        }
-    }
+    public class SetReply() : RdmResponsePacket(RdmCommands.SetResponse, RdmParameters.EndpointLabel);
 }

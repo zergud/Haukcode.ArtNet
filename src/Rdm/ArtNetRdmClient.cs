@@ -25,8 +25,8 @@ public class ArtNetRdmClient : ArtNetClient
         packet.DestinationId = targetId;
 
         //Sub Devices
-        if (targetId is SubDeviceUId subDevice)
-            packet.SubDevice = subDevice.SubDeviceId;
+        // if (targetId is SubDeviceUId subDevice)
+        //     packet.SubDevice = subDevice.SubDeviceId;
 
         //Create Rdm Packet
        // using (var rdmData = new MemoryStream())
@@ -36,11 +36,11 @@ public class ArtNetRdmClient : ArtNetClient
             var rdmWriter = new RdmBinaryWriter(rdmData);
 
             //Write the RDM packet
-            packet.WritePacket(rdmWriter);
-
-            //Write the checksum
-            rdmWriter.WriteUInt16((ushort)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +
-                                          (int)RdmVersions.SubMessage + (int)DmxStartCodes.RDM));
+           //  packet.WritePacket(rdmWriter);
+            //
+            // //Write the checksum
+            // rdmWriter.WriteUInt16((ushort)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +
+            //                               (int)RdmVersions.SubMessage + (int)DmxStartCodes.RDM));
 
             //Create sACN Packet
             var rdmPacket = new ArtRdmPacket

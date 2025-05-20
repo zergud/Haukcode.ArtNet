@@ -70,35 +70,11 @@ public class ProductDetailIdList
         Hazard = 0x30D
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.ProductDetailIdList);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.ProductDetailIdList)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.ProductDetailIdList)
-        {
-        }
-
-        #region Read and Write
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.ProductDetailIdList)
-        {
-            Details = new List<DetailId>();
-        }
-
-        public List<DetailId> Details { get; set; }
+        public List<DetailId> Details { get; set; } = new();
 
         #region Read and Write
 
@@ -111,7 +87,7 @@ public class ProductDetailIdList
         protected internal override void WriteData(RdmBinaryWriter data)
         {
             foreach (DetailId id in Details)
-                data.WriteUInt16((short)id);
+                data.WriteUInt16((ushort)id);
         }
 
         #endregion

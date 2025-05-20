@@ -43,12 +43,12 @@ public class DeviceHours
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            DeviceHours = data.ReadHiLoInt32();
+            DeviceHours = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(DeviceHours);
+            data.WriteInt32(DeviceHours);
         }
 
         #endregion
@@ -67,12 +67,12 @@ public class DeviceHours
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            DeviceHours = data.ReadHiLoInt32();
+            DeviceHours = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(DeviceHours);
+            data.WriteInt32(DeviceHours);
         }
 
         #endregion

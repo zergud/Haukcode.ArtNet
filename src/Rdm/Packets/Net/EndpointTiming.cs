@@ -9,11 +9,11 @@ public class EndpointTiming
         {
         }
 
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
@@ -29,7 +29,7 @@ public class EndpointTiming
         {
         }
 
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         public byte CurrentSetting { get; set; }
 
@@ -37,7 +37,7 @@ public class EndpointTiming
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
             CurrentSetting = data.ReadByte();
             SettingsCount = data.ReadByte();
         }
@@ -57,13 +57,13 @@ public class EndpointTiming
         {
         }
 
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         public byte PortTiming { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
             PortTiming = data.ReadByte();
         }
 

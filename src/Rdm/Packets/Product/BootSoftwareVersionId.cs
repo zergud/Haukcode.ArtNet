@@ -13,47 +13,21 @@
 /// </remarks>
 public class BootSoftwareVersionId
 {
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.BootSoftwareVersionId);
+
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionId)
     {
-        public Get()
-            : base(RdmCommands.Get,RdmParameters.BootSoftwareVersionId)
-        {
-        }
-
-        #region Read and Write
-
-        protected internal override void ReadData(RdmBinaryReader data)
-        {
-        }
-
-        protected internal override void WriteData(RdmBinaryWriter data)
-        {
-        }
-
-        #endregion
-    }
-
-    public class GetReply : RdmResponsePacket
-    {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.BootSoftwareVersionId)
-        {
-        }
-
         public int VersionId { get; set; }
 
-        #region Read and Write
-
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            VersionId = data.ReadHiLoInt32();
+            VersionId = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(VersionId);
+            data.WriteInt32(VersionId);
         }
 
-        #endregion
     }
 }

@@ -10,18 +10,13 @@ public class DiscoveryState
         NotActive = 0x4
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.DiscoveryState)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.DiscoveryState)
-        {
-        }
-
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
@@ -30,23 +25,18 @@ public class DiscoveryState
         }
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.DiscoveryState)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.DiscoveryState)
-        {
-        }
+        public ushort EndpointID { get; set; }
 
-        public short EndpointID { get; set; }
-
-        public short DeviceCount { get; set; }
+        public ushort DeviceCount { get; set; }
 
         public DiscoveryStates DiscoveryState { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
-            DeviceCount = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
+            DeviceCount = data.ReadUInt16();
             DiscoveryState = (DiscoveryStates)data.ReadByte();
 
         }
@@ -66,13 +56,13 @@ public class DiscoveryState
         {
         }
 
-        public short EndpointID { get; set; }
+        public ushort EndpointID { get; set; }
 
         public DiscoveryStates DiscoveryState { get; set; }
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            EndpointID = data.ReadInt16();
+            EndpointID = data.ReadUInt16();
             DiscoveryState = (DiscoveryStates)data.ReadByte();
 
         }

@@ -39,12 +39,12 @@ public class LampHours
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            LampHours = data.ReadHiLoInt32();
+            LampHours = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(LampHours);
+            data.WriteInt32(LampHours);
         }
 
         #endregion
@@ -63,12 +63,12 @@ public class LampHours
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            LampHours = data.ReadHiLoInt32();
+            LampHours = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(LampHours);
+            data.WriteInt32(LampHours);
         }
 
         #endregion

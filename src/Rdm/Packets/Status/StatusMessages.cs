@@ -16,7 +16,7 @@ public class StatusMessage
         /// to which the status message belongs. If the status message does not reference a particular subdevice
         /// the field shall be set to 0x0000, to reference the root device.
         /// </summary>
-        public short SubDeviceId { get; set; }
+        public ushort SubDeviceId { get; set; }
 
         /// <summary>
         /// The Status Type is used to identify the severity of the condition.
@@ -26,7 +26,7 @@ public class StatusMessage
         /// <summary>
         /// Status Message ID’s within the range of 0x0000 — 0x7FFF are reserved for publicly defined Status Messages.
         /// </summary>
-        public short StatusMessageId { get; set; }
+        public ushort StatusMessageId { get; set; }
 
         /// <summary>
         /// Each Status Message supports the return of two separate data values relevant to the context of
@@ -36,7 +36,7 @@ public class StatusMessage
         /// <remarks>
         /// Status ID’s not using the Data Value fields shall set the fields with 0x0000.
         /// </remarks>
-        public short DataValue1 { get; set; }
+        public ushort DataValue1 { get; set; }
 
         /// <summary>
         /// Each Status Message supports the return of two separate data values relevant to the context of
@@ -46,22 +46,15 @@ public class StatusMessage
         /// <remarks>
         /// Status ID’s not using the Data Value fields shall set the fields with 0x0000.
         /// </remarks>
-        public short DataValue2 { get; set; }
+        public ushort DataValue2 { get; set; }
     }
 
-    public class Get : RdmRequestPacket
+    public class Get() : RdmRequestPacket(RdmCommands.Get, RdmParameters.StatusMessage)
     {
-        public Get()
-            : base(RdmCommands.Get, RdmParameters.StatusMessage)
-        {
-        }
-
         /// <summary>
         /// Requests the retransmission of the last sent Status Message or Queued Message.
         /// </summary>
         public StatusTypes StatusType { get; set; }
-
-        #region Read and Write
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
@@ -72,33 +65,22 @@ public class StatusMessage
         {
             data.WriteByte((byte)StatusType);
         }
-
-        #endregion
     }
 
-    public class GetReply : RdmResponsePacket
+    public class GetReply() : RdmResponsePacket(RdmCommands.GetResponse, RdmParameters.StatusMessage)
     {
-        public GetReply()
-            : base(RdmCommands.GetResponse, RdmParameters.StatusMessage)
-        {
-            StatusMessages = new List<Status>();
-        }
-
-        public List<Status> StatusMessages { get; set; }
-
-
-        #region Read and Write
+        public List<Status> StatusMessages { get; set; } = new();
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
             for (int n = 0; n < (ParameterDataLength / 9); n++)
             {
                 Status subDeviceStatus = new Status();
-                subDeviceStatus.SubDeviceId = data.ReadInt16();
+                subDeviceStatus.SubDeviceId = data.ReadUInt16();
                 subDeviceStatus.StatusType = (StatusTypes) data.ReadByte();
-                subDeviceStatus.StatusMessageId = data.ReadInt16();
-                subDeviceStatus.DataValue1 = data.ReadInt16();
-                subDeviceStatus.DataValue2 = data.ReadInt16();
+                subDeviceStatus.StatusMessageId = data.ReadUInt16();
+                subDeviceStatus.DataValue1 = data.ReadUInt16();
+                subDeviceStatus.DataValue2 = data.ReadUInt16();
 
                 StatusMessages.Add(subDeviceStatus);
             }
@@ -118,7 +100,5 @@ public class StatusMessage
                 data.WriteUInt16(item.DataValue2);
             }
         }
-
-        #endregion
     }
 }

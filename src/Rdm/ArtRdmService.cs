@@ -1,22 +1,18 @@
 ﻿using System.Threading.Channels;
 using Haukcode.ArtNet.Internal;
-using Haukcode.Network;
 
 namespace Haukcode.ArtNet.Rdm;
 
 public class ArtRdmService: IDisposable
 {
-    private readonly ArtNetClient client;
+    public readonly ArtNetClient client;
     private readonly Task writerTask;
     private readonly RdmPacketFactory packetFactory;
     
     public event EventHandler<ArtNetEventArgs>? OnArtNetPacketReceived;
     public event EventHandler<RdmEventArgs>? OnRdmPacketReceived;
 
-    public ArtRdmService(
-        IPAddress localAddress,
-        IPAddress localSubnetMask,
-        UId? rdmId = null
+    public ArtRdmService(IPAddress localAddress, IPAddress localSubnetMask, UId? rdmId = null
         )
     {
         packetFactory = new RdmPacketFactory();
@@ -78,7 +74,7 @@ public class ArtRdmService: IDisposable
         if (e.Packet is ArtRdmPacket rdmPacket)
         {
             //var reader = new RdmBinaryReader(new MemoryStream(rdmPacket.RdmData));
-            var reader = new BigEndianBinaryReader(rdmPacket.RdmData);   
+            var reader = new RdmBinaryReader(rdmPacket.RdmData);   
             var rdm = packetFactory.Parse(reader);
             
             if (rdm != null)
@@ -87,6 +83,34 @@ public class ArtRdmService: IDisposable
                 //Console.WriteLine($"Response from device: {rdm.SourceId}");
             }
         }
+    }
+    
+    public Task SendRdm(RdmPacket packet, IPEndPoint targetAddress, short targetUniverse, UId? targetId, UId? sourceId)
+    {
+        packet.SourceId = sourceId;
+        packet.DestinationId = targetId;
+
+        byte[] rdmData = new byte[packet.MessageLength];
+            
+        var rdmWriter = new RdmBinaryWriter(rdmData);
+
+        //Write the RDM packet
+        packetFactory.WritePacket(rdmWriter, packet);
+        //
+        // //Write the checksum
+        // rdmWriter.WriteUInt16((ushort)(RdmPacket.CalculateChecksum(rdmData.GetBuffer()) +
+        //                               (int)RdmVersions.SubMessage + (int)DmxStartCodes.RDM));
+
+        //Create sACN Packet
+        var rdmPacket = new ArtRdmPacket
+        {
+            Address = (byte)(targetUniverse & 0x00FF),
+            Net = (byte)(targetUniverse >> 8),
+            SubStartCode = (byte)RdmVersions.SubMessage,
+            RdmData = rdmData.ToArray()
+        };
+
+        return client.QueuePacketForSending(targetAddress, rdmPacket);
     }
 
     private void Dispose(bool disposing)

@@ -47,12 +47,12 @@ public class EndpointListChange
 
         protected internal override void ReadData(RdmBinaryReader data)
         {
-            ListChangeNumber = data.ReadHiLoInt32();
+            ListChangeNumber = data.ReadInt32();
         }
 
         protected internal override void WriteData(RdmBinaryWriter data)
         {
-            data.WriteHiLoInt32(ListChangeNumber);
+            data.WriteInt32(ListChangeNumber);
         }
     }
 }

@@ -10,27 +10,29 @@ public class Program
         Console.WriteLine("Welcome to ArtNet samples!");
 
         var addr = Haukcode.Network.Utils.GetFirstBindAddress();
+        
+        RdmSample(addr);
 
-        do
-        {
-            Console.WriteLine("Choose sample:");
-            Console.WriteLine("\t1 - ArtTriggerSample");
-            Console.WriteLine("\t2 - RdmSample");
-            Console.WriteLine("\t0 - Exit");
-            switch (Console.ReadLine())
-            {
-                case "1":
-                    ArtTriggerSample(addr);
-                    break;
-                case "2":
-                    RdmSample(addr);
-                    break;
-                case "0":
-                    Console.WriteLine("Bye...");
-                    return;
-            }
-           
-        } while (true);
+        // do
+        // {
+        //     Console.WriteLine("Choose sample:");
+        //     Console.WriteLine("\t1 - ArtTriggerSample");
+        //     Console.WriteLine("\t2 - RdmSample");
+        //     Console.WriteLine("\t0 - Exit");
+        //     switch (Console.ReadLine())
+        //     {
+        //         case "1":
+        //             ArtTriggerSample(addr);
+        //             break;
+        //         case "2":
+        //             RdmSample(addr);
+        //             break;
+        //         case "0":
+        //             Console.WriteLine("Bye...");
+        //             return;
+        //     }
+        //    
+        // } while (true);
     }
 
     private static void ArtTriggerSample((IPAddress IPAddress, IPAddress NetMask, byte[] MacAddress) addr)
@@ -54,8 +56,8 @@ public class Program
 
     private static void RdmSample((IPAddress IPAddress, IPAddress NetMask, byte[] MacAddress) addr)
     {
-        using (var tester = new RdmSample(localIp: addr.IPAddress, localSubnetMask: addr.NetMask))
-        {
+        var tester = new RdmSample(localIp: addr.IPAddress, localSubnetMask: addr.NetMask);
+        
             Console.WriteLine("Sending single ArtPollPacket...");
             //Console.ReadLine();
 
@@ -69,6 +71,5 @@ public class Program
             
             Console.WriteLine("Hit enter to exit...");
             Console.ReadLine();
-        }
     }
 }
